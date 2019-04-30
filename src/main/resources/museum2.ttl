@@ -1,0 +1,148 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn:  <http://www.w3.org/ns/ssn/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+@prefix cdt: <http://w3id.org/lindt/custom_datatypes#> .
+@prefix gauss: <http://gauss.it/> .
+@base <http://gauss.it/museum/> .
+
+# A room
+<room/NW> rdf:type sosa:FeatureOfInterest ;
+  ssn:hasProperty <room/NW/people> .
+
+# A door in a room
+<room/NW/door/1> rdf:type sosa:FeatureOfInterest ;
+  ssn:hasProperty <room/NW/door/1/presenceOnDoorInside> ;
+  ssn:hasProperty <room/NW/door/1/presenceOnDoorOutside> .
+
+# The observable property about presence in the inside of the door
+<room/NW/door/1/presenceOnDoorInside> rdf:type sosa:ObservableProperty ;
+  ssn:isPropertyOf <room/NW/door/1> .
+
+# The observable property about presence in the outside of the door
+<room/NW/door/1/presenceOnDoorOutside> rdf:type sosa:ObservableProperty ;
+  ssn:isPropertyOf <room/NW/door/1> .
+
+# The observable property about number of people in a room
+<room/NW/people> rdf:type sosa:ObservableProperty ;
+  ssn:isPropertyOf <room/NW> .
+
+# The sensor on the inside side of door 1 on room NW
+<sensors/photoelectric/room/NW/door/1/inside> rdf:type sosa:Sensor ;
+  sosa:observes <room/NW/door/1/presenceOnDoorInside> .
+
+# The sensor on the outside side of door 1 on room NW
+<sensors/photoelectric/room/NW/door/1/outside> rdf:type sosa:Sensor ;
+  sosa:observes <room/NW/door/1/presenceOnDoorOutside> .
+
+### logical sensors
+
+# The procedure of counting people composing photoelectric sensors
+<procedures/presence/room/NW/door/1> rdf:type sosa:Procedure ;
+  ssn:hasInput <room/NW/door/1/presenceOnDoorInside> ;
+  ssn:hasInput <room/NW/door/1/presenceOnDoorOutside> ;
+  ssn:implementedBy <sensor/virtual/room/NW/people> ;
+  gauss:action [
+  	gauss:actionType "SPARQLCONSTRUCT" ;
+  	gauss:query """
+CONSTRUCT {
+    ?newObservation a sosa:Observation ;
+        sosa:madeBySensor <sensor/virtual/room/NW/people> ;
+        sosa:resultTime ?now ;
+        sosa:observedProperty <room/NW/people> ;
+        sosa:hasFeatureOfInterest <room/NW> ;
+        sosa:hasSimpleResult ?newResult .
+} WHERE {
+    {
+        SELECT ?observation ?propToObserve WHERE {
+            ?observation a sosa:Observation ;
+                sosa:observedProperty ?propToObserve ;
+                sosa:resultTime ?resultTime .
+            {
+                SELECT ?propToObserve ?obsTime WHERE {
+	                <${_observation}> sosa:observedProperty ?obsProp ;
+                        sosa:resultTime ?obsTime .
+                    BIND(STR(?obsProp) as ?obsPropStr)
+	                BIND(IRI(IF(STRENDS(?obsPropStr, "Inside"), CONCAT(SUBSTR(?obsPropStr, 1, STRLEN(?obsPropStr)-STRLEN("Inside")), "Outside"), CONCAT(SUBSTR(?obsPropStr, 1, STRLEN(?obsPropStr)-STRLEN("Outside")), "Inside"))) as ?propToObserve)
+                }
+            }
+            BIND(?obsTime - ?resultTime as ?timeDifference)
+            FILTER(?obsTime > ?resultTime)
+            FILTER(?timeDifference < "PT1.500S"^^xsd:duration)
+        }
+    }
+    {
+        SELECT ?otherResult WHERE {
+            {
+                ?otherObservation a sosa:Observation ;
+                    sosa:madeBySensor <sensor/virtual/room/NW/people> ;
+                    sosa:resultTime ?otherTime ;
+                    sosa:hasSimpleResult ?otherResult .
+            } UNION {
+                BIND("0"^^xsd:integer as ?otherResult)
+                BIND("1970-01-01T00:00:00+00:00"^^xsd:dateTime as ?otherTime)
+            }
+        } ORDER BY DESC(?otherTime) LIMIT 1
+    }
+    BIND(IF(STRENDS(STR(?propToObserve), "Outside"), xsd:integer(?otherResult)+1, IF(xsd:integer(?otherResult) > 0, xsd:integer(?otherResult)-1, 0)) as ?newResult)
+    BIND(now() as ?now)
+    BIND(IF(BOUND(?observation), IRI(CONCAT("sensor/virtual/room/NW/people#", STR(?now))), ?observation) as ?newObservation) # ?newObservation is bound only if the inner select finds at least one observation, otherwise it's not bound and the insert/construct will do nothing    
+} """
+  ] .
+
+# The virtual sensor that counts people in a room
+<sensor/virtual/room/NW/people> rdf:type sosa:Sensor ;
+  ssn:implements <procedures/presence/room/NW/door/1> ;
+  sosa:observes <room/NW/people> .
+
+### actuations
+
+# The feature of interest about a player being tuned on or off
+<players/room/NW/1> rdf:type sosa:FeatureOfInterest ;
+  ssn:hasProperty <players/room/NW/1#state> .
+
+# The actuatable property of a player (on/off state)
+<players/room/NW/1#state> rdf:type sosa:ActuatableProperty ;
+  ssn:isPropertyOf <players/room/NW/1> ;
+  sosa:isActedOnBy <playerActuator/roomNW/1> .
+
+# The actuator acting on a player's state
+<playerActuator/roomNW/1> rdf:type sosa:Actuator ;
+  ssn:actsOnProperty <players/room/NW/1#state> ;
+  ssn:implements <procedures/actuation/player/room/NW/1> .
+
+# The procedure to bind the actuator to the outside world
+<procedures/actuation/player/room/NW/1> rdf:type sosa:Procedure ;
+  ssn:implementedBy <playerActuator/roomNW/1> ;
+  ssn:hasInput <room/NW/people> ;
+  gauss:action [
+    gauss:actionType "REST" ;
+    gauss:url "http://myactuators.org/actuator/12" ;
+    gauss:method "POST" ;
+    gauss:requestBody """{ "switchTo": "${newState}" }""" ;
+    gauss:paramQuery """
+SELECT ?newState WHERE {
+    <${_observation}> a sosa:Observation ;
+    sosa:hasSimpleResult ?result ;
+    BIND(IF(?result > "0"^^xsd:integer, "on", "off") as ?newState)
+} """
+  ] .
+
+## An observation
+#<observations/room/NW/door/1/presenceOnDoorInside#2018-07-13T11:48:33.111+00:00> rdf:type sosa:Observation ;
+#  sosa:madeBySensor <sensors/photoelectric/room/NW/door/1/inside> ;
+#  sosa:resultTime "2018-07-13T11:48:33.111+00:00"^^xsd:dateTime ;
+#  sosa:observedProperty <room/NW/door/1/presenceOnDoorInside> ;
+#  sosa:hasFeatureOfInterest <room/NW/door/1> .
+
+# An observation as produced by the virtual sensor sensor/virtual/room/NW/people
+<observations/room/NW/people#2018-07-13T11:48:33.333+00:00> rdf:type sosa:Observation ;
+  sosa:madeBySensor <sensor/virtual/room/NW/people> ;
+  sosa:resultTime "2018-07-13T11:48:33.333+00:00"^^xsd:dateTime ;
+  sosa:observedProperty <room/NW/people> ;
+  sosa:hasFeatureOfInterest <room/NW> ;
+  sosa:hasSimpleResult "2"^^xsd:integer.

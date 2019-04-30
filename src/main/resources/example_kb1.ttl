@@ -1,0 +1,129 @@
+prefix ssn: <http://purl.oclc.org/NET/ssnx/ssn#>
+prefix sosa: <http://www.w3.org/ns/sosa/> 
+prefix gauss: <http://gauss.it/>
+prefix oboe: <http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX fn: <http://www.w3.org/2005/xpath-functions#>
+
+gauss:IR1 a sosa:Sensor ;
+	sosa:observes gauss:walkthrough_door1_room1 ;
+	sosa:isHostedBy gauss:room1 .
+ 
+gauss:observation1 a sosa:Observation ;
+	sosa:hasFeatureOfInterest gauss:room1 ;
+	sosa:madeBySensor gauss:IR1 ;
+	sosa:observedProperty gauss:walkthrough_door1_room1 ;
+	sosa:resultTime "2018-07-13T11:50:59.478+00:00"^^xsd:dateTime .
+	
+gauss:room1 a sosa:Platform .
+
+gauss:walkthrough_door1_room1 a gauss:WalkthroughProperty .
+
+gauss:IR2 a sosa:Sensor ;
+	sosa:observes gauss:walkthrough_door1_room2 ;
+	sosa:isHostedBy gauss:room2 .
+ 
+gauss:observation2 a sosa:Observation ;
+	sosa:hasFeatureOfInterest gauss:room2 ;
+	sosa:madeBySensor gauss:IR2 ;
+	sosa:observedProperty gauss:walkthrough_door1_room2 ;
+	sosa:resultTime "2018-07-13T11:50:58.878+00:00"^^xsd:dateTime .
+	
+gauss:room2 a sosa:Platform .
+
+gauss:walkthrough_door1_room2 a gauss:WalkthroughProperty .
+
+
+
+
+gauss:logicsensor1 a sosa:Sensor ;
+	sosa:isHostedBy gauss:virtualSensorManager ;
+	sosa:observes gauss:presence_room1 ;
+	sosa:observes gauss:presence_room2 .
+
+gauss:presence_room1 a sosa:observableProperty .
+gauss:presence_room2 a sosa:observableProperty .
+	
+gauss:door1_room1_entrance a sosa:Procedure ;
+	ssn:implementedBy gauss:logicsensor1 ;
+	ssn:hasInput gauss:observation_presence_room1 ;
+	ssn:hasInput gauss:observation-coll1 ;
+	ssn:hasInput gauss:observation-coll2 ;
+	gauss:hasImplementation gauss:query1 .
+
+gauss:observation_presence_room1 a sosa:Observation ;
+	sosa:observedProperty gauss:presence_room1 ;
+	sosa:resultTime "2018-07-13T11:51:26+00:00"^^xsd:dateTime ;
+	sosa:hasSimpleResult "0"^^xsd:integer .
+
+gauss:observation_presence_room2 a sosa:Observation ;
+	sosa:observedProperty gauss:presence_room2 ;
+	sosa:resultTime "2018-07-13T11:50:35+00:00"^^xsd:dateTime ;
+	sosa:hasSimpleResult "3"^^xsd:integer .
+	
+gauss:observation-coll1 a oboe:ObservationCollection ;
+	oboe:hasMember gauss:observation1 .
+	
+gauss:observation-coll2 a oboe:ObservationCollection ;
+	oboe:hasMember gauss:observation2 .
+
+gauss:query1 a gauss:SparqlQuery ;
+	gauss:hasTextualManifestation """PREFIX op: <http://environment.data.gov.au/def/op#>
+prefix ssn: <http://purl.oclc.org/NET/ssnx/ssn#>
+prefix sosa: <http://www.w3.org/ns/sosa/> 
+prefix gauss: <http://gauss.it/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+INSERT { 
+  ?obs_new a sosa:Observation ;
+	sosa:hasFeatureOfInterest gauss:room1 ;
+    sosa:madeBySensor gauss:logicsensor1 ;
+    sosa:observedProperty gauss:presence_room1 ;
+    sosa:resultTime ?now;
+    sosa:hasSimpleResult ?num_new .
+  gauss:door1_room1_entrance ssn:hasOutput ?obs_new .
+}
+WHERE {
+  {
+    SELECT ?diff_time (xsd:integer(?num_old)+xsd:integer(1) AS ?num_new)
+    WHERE {
+      ?obs1 sosa:observedProperty gauss:walkthrough_door1_room1 ;
+            sosa:resultTime ?time1 .
+      ?obs2 sosa:observedProperty gauss:walkthrough_door1_room2 ;
+            sosa:resultTime ?time2 .
+      ?obs_num sosa:observedProperty gauss:presence_room1 ;
+            sosa:resultTime ?time_num ;
+            sosa:hasSimpleResult ?num_old .
+      bind( ?time2 - ?time1 as ?diff_time )
+    } ORDER BY DESC(?time1) DESC(?time2) DESC(?time_num) LIMIT 1
+  }
+  FILTER (?diff_time < "PT1.500S"^^xsd:duration)
+  bind (now() as ?now)
+  bind (IRI(CONCAT("http://gauss.it/observation_",STR(?now))) as ?obs_new)
+}
+"""^^xsd:string ;
+	gauss:hasSpinManifestation gauss:query1_spin .
+
+# TODO
+# gauss:query1_spin ...
+
+
+
+
+#######################################################################
+# other observations
+#######################################################################
+gauss:observation-1 a sosa:Observation ;
+	sosa:hasFeatureOfInterest gauss:room1 ;
+	sosa:madeBySensor gauss:IR1 ;
+	sosa:observedProperty gauss:walkthrough_door1_room1 ;
+	sosa:resultTime "2018-07-13T11:48:33.333+00:00"^^xsd:dateTime .
+
+gauss:observation-2 a sosa:Observation ;
+	sosa:hasFeatureOfInterest gauss:room2 ;
+	sosa:madeBySensor gauss:IR2 ;
+	sosa:observedProperty gauss:walkthrough_door1_room2 ;
+	sosa:resultTime "2018-07-13T11:46:55.555+00:00"^^xsd:dateTime .
+
