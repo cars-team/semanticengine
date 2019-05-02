@@ -1,6 +1,7 @@
 package it.gaussproject.semanticengine;
 
-import java.io.InputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
@@ -352,11 +353,22 @@ public class Engine {
 		Engine.changeListener.addedStatements(newStatements);
 	}
 
+	/**
+	 * Loads a turtle file
+	 * 
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
+	public void loadTurtle(String filename) throws FileNotFoundException {
+		Model newModel = ModelFactory.createDefaultModel().read(new FileReader(filename), null, "TTL");
+		runAddTransaction(newModel);
+	}
+
 	protected Engine() {
 		//TODO read the initialization turtle from configuration
-		InputStream in = getClass().getResourceAsStream("/museum2.ttl");
+//		InputStream in = getClass().getResourceAsStream("/museum2.ttl");
 		this.model = ModelFactory.createDefaultModel();
-		model.read(in, null, "TTL");
+//		model.read(in, null, "TTL");
 		//TODO commented since we do not use Jena unreliable notifications
 		//model.register(Engine.changeListener);
 	}

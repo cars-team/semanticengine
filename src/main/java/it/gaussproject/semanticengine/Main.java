@@ -28,6 +28,7 @@ public class Main {
 	private static Logger LOG = Logger.getGlobal();
     // Base URI the Grizzly HTTP server will listen on
     public static final String BASE_URI = "http://localhost:9876/engineapi/";
+    public static final int port = 9876;
     private enum QueryModes { SELECT, UPDATE, CONSTRUCT };
 
     /**
@@ -44,18 +45,12 @@ public class Main {
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
-    /**
-     * Main method.
-     * @param args
-     * @throws IOException
-     */
-    public static void main(String[] args) throws IOException {
-    	LOG.setLevel(Level.ALL);
+    public static void run() {
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\n"+
-        		"You can enter multiline SPARQL queries here; last line must only contain \".\""+
-                "Enter an empty query to exit", BASE_URI));
+        		"You can enter multiline SPARQL queries here; last line must only contain \".\"\n"+
+                "Enter an empty query to exit\n", BASE_URI));
         LOG.info("Running from "+System.getProperty("user.dir"));
         try(Scanner scanner = new Scanner(System.in)) {
 	        String query = "";
@@ -99,5 +94,38 @@ public class Main {
 	        } while(!done);
         }
         server.shutdownNow();
+    }
+
+    private static void usage() {
+    	System.out.println("Usage: semanticengine [-t turtle_file]");
+    }
+    
+    /**
+     * Main method.
+     * @param args
+     * @throws IOException
+     */
+    public static void main(String[] args) throws IOException {
+    	LOG.setLevel(Level.ALL);
+		int index = 0;
+		String ttlFile = null;
+		boolean usage = false;
+		while(index < args.length && args[index].startsWith("-")) {
+			if(args[index].equals("-t")) {
+				index++;
+				ttlFile = args[index];
+			} else {
+				usage = true;
+			}
+			index++;
+		}
+		if(usage) {
+			usage();
+		} else {
+			if(ttlFile != null) {
+				Engine.getEngine().loadTurtle(ttlFile);
+			}
+	    	run();
+		}
     }
 }

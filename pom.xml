@@ -7,7 +7,7 @@
 	<groupId>it.gaussproject</groupId>
 	<artifactId>semanticengine</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>semanticengine</name>
 
 	<properties>
