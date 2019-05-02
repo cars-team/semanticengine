@@ -27,30 +27,30 @@ import java.util.logging.Logger;
 public class Main {
 	private static Logger LOG = Logger.getGlobal();
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:9876/engineapi/";
-    public static final int port = 9876;
+    public static final String BASE_URI_FORMAT = "http://localhost:%d/engineapi/";
+    public static final int DEFAULT_PORT = 9876;
     private enum QueryModes { SELECT, UPDATE, CONSTRUCT };
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
      * @return Grizzly HTTP server.
      */
-    public static HttpServer startServer() {
+    public static HttpServer startServer(int port) {
         // create a resource config that scans for JAX-RS resources and providers
         // in it.gaussproject.semanticengine package
         final ResourceConfig rc = new ResourceConfig().packages("it.gaussproject.semanticengine");
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(String.format(BASE_URI_FORMAT, port)), rc);
     }
 
-    public static void run() {
-        final HttpServer server = startServer();
+    public static void run(int port) {
+        final HttpServer server = startServer(port);
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\n"+
         		"You can enter multiline SPARQL queries here; last line must only contain \".\"\n"+
-                "Enter an empty query to exit\n", BASE_URI));
+                "Enter an empty query to exit\n", String.format(BASE_URI_FORMAT, port)));
         LOG.info("Running from "+System.getProperty("user.dir"));
         try(Scanner scanner = new Scanner(System.in)) {
 	        String query = "";
@@ -109,11 +109,15 @@ public class Main {
     	LOG.setLevel(Level.ALL);
 		int index = 0;
 		String ttlFile = null;
+		int port = DEFAULT_PORT;
 		boolean usage = false;
 		while(index < args.length && args[index].startsWith("-")) {
 			if(args[index].equals("-t")) {
 				index++;
 				ttlFile = args[index];
+			} else if(args[index].equals("-p")) {
+				index++;
+				port = Integer.parseInt(args[index]);
 			} else {
 				usage = true;
 			}
@@ -125,7 +129,7 @@ public class Main {
 			if(ttlFile != null) {
 				Engine.getEngine().loadTurtle(ttlFile);
 			}
-	    	run();
+	    	run(port);
 		}
     }
 }
