@@ -50,8 +50,8 @@ public class Engine {
 	private static Engine instance = new Engine();
 	private static EngineChangeListener changeListener = instance.new EngineChangeListener();
 	//TODO improve handling of prefixes
-	public static final String gaussNS = "http://gauss.it/";
-	public static final String gaussMuseumNS = gaussNS+"museum/";
+	public static final String lsaNS = "http://www.gauss.it/lsa/";
+	public static final String gaussMuseumNS = "http://www.gauss.it/museum/";
 
 	public static final String queryPrefixes = "prefix sosa: <http://www.w3.org/ns/sosa/>\n" +
 			"prefix oboe: <http://ecoinformatics.org/oboe/oboe.1.0/oboe-core.owl#>\n" +
@@ -59,7 +59,8 @@ public class Engine {
 			"prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
 			"prefix xsd: <http://www.w3.org/2001/XMLSchema#>\n"+
 			"prefix ssn: <http://www.w3.org/ns/ssn/>\n"+
-			"prefix gauss: <"+gaussNS+">\n" +
+			"prefix lsa: <"+lsaNS+">\n" +
+			"prefix gmus: <"+gaussMuseumNS+">\n" +
 			"base <"+gaussMuseumNS+">\n\n";
 	public static final String ttlPrefixes = "@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" + 
 			"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" + 
@@ -70,19 +71,39 @@ public class Engine {
 			"@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .\n" + 
 			"@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .\n" + 
 			"@prefix cdt: <http://w3id.org/lindt/custom_datatypes#> .\n" + 
-			"@prefix gauss: <"+gaussNS+"> .\n" + 
+			"@prefix lsa: <"+lsaNS+"> .\n" + 
+			"@prefix gmus: <"+gaussMuseumNS+"> .\n" + 
 			"@base <"+gaussMuseumNS+"> .\n\n";
-
+	private static final String proceduresQueryTemplate = 
+			"SELECT ?softProcedure ?sensor ?propName ?propValue " + 
+			"WHERE '{'" + 
+			"	?softProcedure ssn:hasInput <{0}> ; " + 
+			"		ssn:implementedBy ?sensor ; " + 
+			"		lsa:hasBehavior ?behavior ; " + 
+			"		rdf:type/rdfs:subClassOf lsa:SoftwareProcedure . " + 
+			"	?behavior lsa:hasActionSpecification ?actionable . " + 
+			"	?actionable a lsa:Actionable ; " + 
+			"		?propName ?propValue . " + 
+			"	?sensor rdf:type sosa:Sensor . " + 
+			"'}'";
+	private static final String ACTION_ADD_TTL = gaussMuseumNS+"addTTL";
+	private static final String ACTION_SPARQL_CONSTRUCT = gaussMuseumNS+"sparqlQuery";
+	private static final String ACTION_SPARQL_UPDATE = gaussMuseumNS+"sparqlQueryUpdate";
+	private static final String ACTION_REST = gaussMuseumNS+"restQuery";
+	
 	/**
 	 * Inner class that listens to changes in the model.
 	 * Its task is to "run" logical sensors/activators when needed
 	 */
 	private class EngineChangeListener extends StatementListener {
+		private boolean enabled = false;
 		@Override
 		public void addedStatements(List<Statement> statements) {
-			super.addedStatements(statements);
-			checkLogicalSensors(statements, model);
-			checkLogicalActuators(statements, model);
+			if(this.enabled && statements.size() > 0) {
+				super.addedStatements(statements);
+				checkLogicalSensors(statements, model);
+				checkLogicalActuators(statements, model);
+			}
 		}
 
 		public void checkLogicalSensors(List<Statement> statements, Model model) {
@@ -102,16 +123,7 @@ public class Engine {
 					paramMap.put("_observation", observation);
 					//retrieve the queries for procedures that have the observedPropery as input (if any)
 					//TODO restrict to procedures linked to sensors?
-					query = MessageFormat.format(Engine.queryPrefixes+
-						"SELECT ?procedure ?sensor ?propName ?propValue WHERE '{' "+
-						"?procedure ssn:hasInput <{0}> . "+
-						"?procedure ssn:implementedBy ?sensor . "+
-						"?sensor rdf:type sosa:Sensor . "+
-						"?procedure rdf:type sosa:Procedure . "+
-						"?procedure ssn:implementedBy ?sensor . "+
-						"?procedure gauss:action ?action . "+
-						"?action ?propName ?propValue '}'", 
-						obsProp);
+					query = MessageFormat.format(Engine.queryPrefixes+Engine.proceduresQueryTemplate, obsProp);
 					try (QueryExecution queryExecution2 = QueryExecutionFactory.create(query, model)) {
 						Map<String, String> actions = new HashMap<>();
 						ResultSet results2 = queryExecution2.execSelect();
@@ -123,7 +135,7 @@ public class Engine {
 						}
 						//TODO put current sensor in a action's special key?
 						if(actions.size() > 0) {
-							LOG.info("Logical sensor activated, executing action: "+actions.get(Engine.gaussNS+"actionType").toString());
+							LOG.info("Logical sensor activated, executing action: "+actions.get(Engine.lsaNS+"hasType").toString());
 							runActions(actions, paramMap);
 						}
 					}
@@ -154,34 +166,30 @@ public class Engine {
 
 					//retrieve the actions for procedures that have the observerPropery as input (if any)
 					//TODO restrict to procedures linked to actuators?
-					query = MessageFormat.format(Engine.queryPrefixes+
-							"SELECT ?procedure ?action ?propName ?propValue WHERE '{' "+
-							"?procedure ssn:hasInput <{0}> . "+
-							"?procedure ssn:implementedBy ?actuator . "+
-							"?actuator rdf:type sosa:Actuator . "+
-							"?procedure rdf:type sosa:Procedure . "+
-							"?procedure gauss:action ?action . "+
-							"?action ?propName ?propValue '}'", 
-							obsProp);
-						try (QueryExecution queryExecution2 = QueryExecutionFactory.create(query, model)) {
-							Map<String, String> actions = new HashMap<>();
-							ResultSet results2 = queryExecution2.execSelect();
-							while(results2.hasNext()) {
-								QuerySolution solution2 = results2.next();
-								String actionPropName = solution2.get("propName").toString();
-								String actionPropValue = solution2.get("propValue").toString();
-								actions.put(actionPropName, actionPropValue);
-							}
-							if(actions.size() > 0) {
-								LOG.info("Actuator activated, executing action: "+actions.get(Engine.gaussNS+"actionType").toString());
-								runActions(actions, paramMap);
-							}
+					query = MessageFormat.format(Engine.queryPrefixes+Engine.proceduresQueryTemplate, obsProp);
+					try (QueryExecution queryExecution2 = QueryExecutionFactory.create(query, model)) {
+						Map<String, String> actions = new HashMap<>();
+						ResultSet results2 = queryExecution2.execSelect();
+						while(results2.hasNext()) {
+							QuerySolution solution2 = results2.next();
+							String actionPropName = solution2.get("propName").toString();
+							String actionPropValue = solution2.get("propValue").toString();
+							actions.put(actionPropName, actionPropValue);
 						}
+						if(actions.size() > 0) {
+							LOG.info("Actuator activated, executing action: "+actions.get(Engine.lsaNS+"hasType").toString());
+							runActions(actions, paramMap);
+						}
+					}
 				}
 			} catch (Exception e) {
 				LOG.warning(e.toString());
 				System.out.println(e.getMessage());
 			}
+		}
+		
+		void enable(boolean active) {
+			this.enabled = active;
 		}
 	}
 
@@ -201,12 +209,12 @@ public class Engine {
 		if(paramMap == null) {
 			paramMap = new HashMap<>();
 		}
-		String actionType = actions.get(Engine.gaussNS+"actionType");
-		if(actionType.equals("ADDTTL")) {
-			String ttlTemplate = actions.get(Engine.gaussNS+"ttlTemplate");
+		String actionType = actions.get(Engine.lsaNS+"hasType");
+		if(actionType.equals(ACTION_ADD_TTL)) {
+			String ttlTemplate = actions.get(Engine.lsaNS+"ttlTemplate");
 			//TODO this is a workaround, find the correct way to handle escaped quotes in long strings in turtle
 			ttlTemplate = ttlTemplate.replace("\\\"", "\"");
-			String paramQuery = actions.get(Engine.gaussNS+"paramQuery");
+			String paramQuery = actions.get(Engine.lsaNS+"paramQuery");
 			if(paramQuery != null) {
 				paramQuery = NamedFormatter.format(paramQuery.replace("\\\"", "\""), paramMap);
 			}
@@ -230,26 +238,26 @@ public class Engine {
 			String ttl = NamedFormatter.format(ttlTemplate, paramMap);
 			LOG.info("Inserting model: \n"+ttl);
 			runAddTtlTransaction(ttl);
-		} else if(actionType.equals("SPARQLUPDATE")) {
-			String query = actions.get(Engine.gaussNS+"query");
+		} else if(actionType.equals(ACTION_SPARQL_UPDATE)) {
+			String query = actions.get(Engine.lsaNS+"hasCode");
 			query = query.replace("\\\"", "\"");
-			query = NamedFormatter.format(query, paramMap);
+			query = Engine.queryPrefixes+NamedFormatter.format(query, paramMap);
 			LOG.info("SPARQLUPDATE running query: "+query);
 			runUpdateTransaction(query);
-		} else if(actionType.equals("SPARQLCONSTRUCT")) {
-			String query = actions.get(Engine.gaussNS+"query");
+		} else if(actionType.equals(ACTION_SPARQL_CONSTRUCT)) {
+			String query = actions.get(Engine.lsaNS+"hasCode");
 			query = query.replace("\\\"", "\"");
-			query = NamedFormatter.format(query, paramMap);
+			query = Engine.queryPrefixes+NamedFormatter.format(query, paramMap);
 			LOG.info("SPARQLCONSTRUCT running query: "+query);
 			Model newModel = runConstructTransaction(query);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			RDFDataMgr.write(baos, newModel, Lang.TURTLE);
 			LOG.info("Result: "+baos.toString(Charset.defaultCharset()));
 			runAddTransaction(newModel);
-		} else if(actionType.equals("REST")) {
-			String method = actions.get(Engine.gaussNS+"method");
-			String url = actions.get(Engine.gaussNS+"url");
-			String paramQuery = actions.get(Engine.gaussNS+"paramQuery");
+		} else if(actionType.equals(ACTION_REST)) {
+			String method = actions.get(Engine.lsaNS+"hasMethod");
+			String url = actions.get(Engine.lsaNS+"hasURL");
+			String paramQuery = actions.get(Engine.lsaNS+"paramQuery");
 			if(paramQuery != null) {
 				paramQuery = NamedFormatter.format(paramQuery.replace("\\\"", "\""), paramMap);
 			}
@@ -268,7 +276,7 @@ public class Engine {
 				}
 			}
 			paramMap.put("now", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(new Date()));
-			String requestBody = actions.get(Engine.gaussNS+"requestBody");
+			String requestBody = actions.get(Engine.lsaNS+"requestBody");
 			if(requestBody != null) {
 				requestBody = NamedFormatter.format(requestBody.replace("\\\"", "\""), paramMap);
 			}
@@ -341,11 +349,11 @@ public class Engine {
 	 * Transactionally add a model to the KB
 	 * @param model the model to add
 	 */
-	public void runAddTransaction(Model model) {
+	public void runAddTransaction(Model newModel) {
 		List<Statement> newStatements = new ArrayList<>();
 		synchronized(this.model) {
-			this.model.add(model);
-			StmtIterator iterator = model.listStatements();
+			this.model.add(newModel);
+			StmtIterator iterator = newModel.listStatements();
 			while(iterator.hasNext()) {
 				newStatements.add(iterator.next());
 			}
@@ -363,12 +371,13 @@ public class Engine {
 		Model newModel = ModelFactory.createDefaultModel().read(new FileReader(filename), null, "TTL");
 		runAddTransaction(newModel);
 	}
+	
+	public void enableListeners(boolean active) {
+		Engine.changeListener.enable(active);
+	}
 
 	protected Engine() {
-		//TODO read the initialization turtle from configuration
-//		InputStream in = getClass().getResourceAsStream("/museum2.ttl");
 		this.model = ModelFactory.createDefaultModel();
-//		model.read(in, null, "TTL");
 		//TODO commented since we do not use Jena unreliable notifications
 		//model.register(Engine.changeListener);
 	}

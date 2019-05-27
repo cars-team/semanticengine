@@ -97,7 +97,7 @@ public class Main {
     }
 
     private static void usage() {
-    	System.out.println("Usage: semanticengine [-t turtle_file]");
+    	System.out.println("Usage: semanticengine [-t turtle_file] [-p HTTP_port]");
     }
     
     /**
@@ -129,6 +129,7 @@ public class Main {
 			if(ttlFile != null) {
 				Engine.getEngine().loadTurtle(ttlFile);
 			}
+			Engine.getEngine().enableListeners(true);
 	    	run(port);
 		}
     }
