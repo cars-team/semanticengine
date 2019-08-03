@@ -55,19 +55,10 @@ public class TransactionEnqueuingDatasetGraphWrapper extends DatasetGraphWrapper
 	
 	private ModelEnqueuingGraphWrapper modelEnqueuingGraphWrapper;
 	private BlockingQueue<Model> queue;
-	private Model wrappedDefaultModel;
 	private Map<Node, Graph> wrappedGraphs = new HashMap<Node, Graph>();
 	public TransactionEnqueuingDatasetGraphWrapper(DatasetGraph datasetGraph, BlockingQueue<Model> queue) {
 		super(datasetGraph);
 		this.queue = queue;
-	}
-	public synchronized Model getWrappedModelForWrappedDatasetGraph() {
-		if(this.wrappedDefaultModel == null) {
-			this.modelEnqueuingGraphWrapper = new ModelEnqueuingGraphWrapper(super.getDefaultGraph());
-				//create a model using the wrappedGraph as underlying graph
-			this.wrappedDefaultModel = ModelFactory.createModelForGraph(this.modelEnqueuingGraphWrapper);
-		}
-		return this.wrappedDefaultModel;
 	}
 	@Override
 	public synchronized Graph getDefaultGraph() {
