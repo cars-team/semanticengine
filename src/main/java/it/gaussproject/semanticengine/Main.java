@@ -49,8 +49,9 @@ public class Main {
         final HttpServer server = startServer(port);
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\n"+
-        		"You can enter multiline SPARQL queries here; last line must only contain \".\"\n"+
-                "Enter an empty query to exit\n", String.format(BASE_URI_FORMAT, port)));
+        		"You can enter multiline SPARQL queries here; end you query with a line only containing \".\"\n"+
+                "The following prefixes can be used in your queries:\n"+Engine.getQueryprefixes()+
+                "Enter an empty query (\".\") to exit\n", String.format(BASE_URI_FORMAT, port)));
         LOG.info("Running from "+System.getProperty("user.dir"));
         try(Scanner scanner = new Scanner(System.in)) {
 	        String query = "";
@@ -93,11 +94,12 @@ public class Main {
 	        	}
 	        } while(!done);
         }
+        Engine.getEngine().shutdown();
         server.shutdownNow();
     }
 
     private static void usage() {
-    	System.out.println("Usage: semanticengine [-t turtle_file] [-p HTTP_port]");
+    	System.out.println("Usage: semanticengine [-d database_file] [-t turtle_file] [-p HTTP_port]");
     }
     
     /**
@@ -118,6 +120,9 @@ public class Main {
 			} else if(args[index].equals("-p")) {
 				index++;
 				port = Integer.parseInt(args[index]);
+			} else if(args[index].equals("-d")) {
+				index++;
+				Engine.getEngine().makePersistent(args[index]);
 			} else {
 				usage = true;
 			}

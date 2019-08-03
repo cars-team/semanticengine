@@ -1,0 +1,2545 @@
+@prefix : <http://www.gauss.it/lsa/> .
+@prefix lsa: <http://www.gauss.it/lsa/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix gmus: <http://example.museum.gauss.it/> .
+@prefix owlc: <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@base <http://www.gauss.it/lsa/> .
+
+<http://www.gauss.it/lsa/> rdf:type owl:Ontology ;
+                            owl:versionIRI <http://www.gauss.it/lsa/> ;
+                            owl:imports sosa: ;
+                            rdfs:comment "LSA Ontology v.2.0, its example use, its Alignment with SSN 2017 and OWLC."@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/terms/created
+<http://purl.org/dc/terms/created> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+<http://purl.org/dc/terms/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+<http://purl.org/dc/terms/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+<http://purl.org/dc/terms/license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/rights
+<http://purl.org/dc/terms/rights> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+<http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+<http://purl.org/vocab/vann/preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/domainIncludes
+<http://schema.org/domainIncludes> rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/rangeIncludes
+<http://schema.org/rangeIncludes> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.gauss.it/lsa/hasControlSpecification
+lsa:hasControlSpecification rdf:type owl:AnnotationProperty ;
+                            rdfs:range lsa:ControlStructure .
+
+
+###  http://www.gauss.it/lsa/hasMethod
+lsa:hasMethod rdf:type owl:AnnotationProperty .
+
+
+###  http://www.gauss.it/lsa/hasPriority
+lsa:hasPriority rdf:type owl:AnnotationProperty ;
+                rdfs:range xsd:int ,
+                           xsd:integer ;
+                rdfs:domain ssn:System .
+
+
+###  http://www.gauss.it/lsa/implements
+lsa:implements rdf:type owl:AnnotationProperty .
+
+
+###  http://www.gauss.it/lsa/resr
+lsa:resr rdf:type owl:AnnotationProperty .
+
+
+###  http://www.opengis.net/ont/geosparql#asWKT
+<http://www.opengis.net/ont/geosparql#asWKT> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.opengis.net/ont/geosparql#hasGeometry
+<http://www.opengis.net/ont/geosparql#hasGeometry> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#comment
+rdf:comment rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+<http://www.w3.org/2004/02/skos/core#definition> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#example
+<http://www.w3.org/2004/02/skos/core#example> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#note
+<http://www.w3.org/2004/02/skos/core#note> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/sosa/observes
+sosa:observes rdf:type owl:AnnotationProperty .
+
+
+###  http://xmlns.com/foaf/0.1/name
+<http://xmlns.com/foaf/0.1/name> rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/pep/madedBy
+<https://w3id.org/pep/madedBy> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.opengis.net/ont/geosparql#wktLiteral
+<http://www.opengis.net/ont/geosparql#wktLiteral> rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.gauss.it/lsa/consistsOf
+lsa:consistsOf rdf:type owl:ObjectProperty ;
+               rdfs:domain lsa:State ;
+               rdfs:range lsa:State .
+
+
+###  http://www.gauss.it/lsa/executedBy
+lsa:executedBy rdf:type owl:ObjectProperty ;
+               owl:inverseOf lsa:executes ;
+               rdfs:domain lsa:SoftwareProcedure ;
+               rdfs:range lsa:SoftwareProcedureExecutor ;
+               rdfs:comment """lsa:executedBy
+
+Scope note: This property identifies procedure executors of software procedures.
+
+Range:          lsa:SoftwareProcedure
+
+Domain:        lsa:ProcedureExecutor"""@en .
+
+
+###  http://www.gauss.it/lsa/executes
+lsa:executes rdf:type owl:ObjectProperty ;
+             rdfs:domain lsa:SoftwareProcedureExecutor ;
+             rdfs:range lsa:SoftwareProcedure ;
+             rdfs:comment """lsa:executes
+
+Scope note: This property identifies software procedures executed by procedure executors .
+
+Domain:        lsa:ProcedureExecutor
+
+Range:          lsa:SoftwareProcedure"""@en .
+
+
+###  http://www.gauss.it/lsa/first
+lsa:first rdf:type owl:ObjectProperty ;
+          rdfs:domain lsa:List ;
+          rdfs:comment """lsa:first
+
+Scope note: This property identifies the first item in the list.
+
+Domain:        lsa:List
+
+Range:          owl:Thing"""@en .
+
+
+###  http://www.gauss.it/lsa/hasActionSpecification
+lsa:hasActionSpecification rdf:type owl:ObjectProperty ;
+                           owl:inverseOf lsa:isActionSpecificationOf ;
+                           rdfs:domain lsa:ActionableBehavior ;
+                           rdfs:range lsa:Actionable ;
+                           rdfs:comment """lsa:hasActionSpecification
+
+Scope note: This property identifies the actionable items of the behavior for a software procedure.
+
+Inverse:        lsa:isActionSpecificationOf
+
+Domain:        lsa:ActionableBehavior
+
+Range:          lsa:Actionable"""@en .
+
+
+###  http://www.gauss.it/lsa/hasBehavior
+lsa:hasBehavior rdf:type owl:ObjectProperty ;
+                owl:inverseOf lsa:isBehaviorOf ;
+                rdfs:domain lsa:SoftwareProcedure ;
+                rdfs:range lsa:ActionableBehavior ;
+                rdfs:comment """lsa:hasBehavior
+
+Scope note: This property identifies the actionable behavior for a software procedure.
+
+Domain:        lsa:SoftwareProcedure
+
+Range:          lsa:ActionableBehaior"""@en .
+
+
+###  http://www.gauss.it/lsa/hasControlSpecification
+lsa:hasControlSpecification rdf:type owl:ObjectProperty ;
+                            owl:inverseOf lsa:isControlSpecificationOf ;
+                            rdfs:domain lsa:ActionableBehavior .
+
+
+###  http://www.gauss.it/lsa/hasExecuted
+lsa:hasExecuted rdf:type owl:ObjectProperty ;
+                owl:inverseOf lsa:madeBy ;
+                rdfs:domain lsa:SoftwareProcedureExecutor ;
+                rdfs:range lsa:SoftwareProcedureExecution ;
+                rdfs:comment """lsa:hasExecuted
+
+Scope note: This property identifies software procedure executions executed by software procedure executors .
+
+Domain:        lsa:ProcedureExecutor
+
+Range:          lsa:SoftwareProcedure"""@en .
+
+
+###  http://www.gauss.it/lsa/hasPreference
+lsa:hasPreference rdf:type owl:ObjectProperty ;
+                  rdfs:domain owlc:ContextDimension ;
+                  rdfs:range owlc:ContextDimensionValue .
+
+
+###  http://www.gauss.it/lsa/hasState
+lsa:hasState rdf:type owl:ObjectProperty ;
+             owl:inverseOf lsa:isStateOf ;
+             rdfs:domain ssn:System ;
+             rdfs:range lsa:State ;
+             rdfs:comment """lsa:hasState
+
+Scope note: This property specifies the states of a ssn:System.
+
+inverse:         lsa:isStateOf
+
+Domain:        ssn:System
+
+Range:           lsa:State"""@en .
+
+
+###  http://www.gauss.it/lsa/hasTimespan
+lsa:hasTimespan rdf:type owl:ObjectProperty ;
+                owl:inverseOf lsa:isTimespanOf ;
+                rdfs:domain lsa:TemporalEntity ;
+                rdfs:range lsa:Timespan ;
+                rdfs:comment """lsa:hasTimespan 
+
+Scope note: This property describes the temporal confinement of an instance of a Temporal Entity.
+
+inverse:           lsa:isTimespanOf
+
+Domain:         lsa:TemporalEntity
+Range:           lsa:Timespan
+
+Quantification: many to one, necessary, dependent (1,1:1,n)"""@en .
+
+
+###  http://www.gauss.it/lsa/hasType
+lsa:hasType rdf:type owl:ObjectProperty ;
+            owl:inverseOf lsa:isTypeOf ;
+            rdf:type owl:FunctionalProperty ;
+            rdfs:range lsa:Type ;
+            rdfs:comment """lsa:hasType
+
+Scope note: This property allows typing of owl:Thing through terminalogical classifications of terminological hierarchy or thesaurus.
+
+Inverse:       lsa:isTypeOf
+
+Domain:      owl:Thing
+
+Range:         lsa:Type"""@en .
+
+
+###  http://www.gauss.it/lsa/implementedBy
+lsa:implementedBy rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf ssn:implementedBy ;
+                  rdfs:domain lsa:SoftwareProcedure ;
+                  rdfs:range ssn:System ;
+                  rdfs:comment """lsa:implementedBy
+
+Subproperty of: ssn:implementedBy
+
+Scope note: This property identifies  systems that implement a software procedure.
+
+Domain:       lsa:SoftwareProcedure
+
+Range:         ssn:System"""@en .
+
+
+###  http://www.gauss.it/lsa/isAbleToExecute
+lsa:isAbleToExecute rdf:type owl:ObjectProperty ;
+                    owl:inverseOf lsa:isExecutableBy ;
+                    rdfs:domain lsa:SoftwareProcedureExecutor ;
+                    rdfs:range lsa:ActionableType ;
+                    rdfs:comment """lsa:isAbleToExecute
+
+Scope note: This property specifies the actionable types executable by a software procedure executor.
+
+inverse: lsa:isExecutableBy
+
+Domain:        lsa:SoftwareProcedureExecutor
+
+Range:          lsa:ActionableType"""@en .
+
+
+###  http://www.gauss.it/lsa/isActionSpecificationOf
+lsa:isActionSpecificationOf rdf:type owl:ObjectProperty ;
+                            rdfs:subPropertyOf owl:topObjectProperty ;
+                            rdfs:domain lsa:Actionable ;
+                            rdfs:range lsa:ActionableBehavior .
+
+
+###  http://www.gauss.it/lsa/isBehaviorOf
+lsa:isBehaviorOf rdf:type owl:ObjectProperty ;
+                 rdfs:domain lsa:ActionableBehavior ;
+                 rdfs:range lsa:SoftwareProcedure ;
+                 rdfs:comment """lsa:isBehaviorOf
+
+inverse:         lsa:hasBehavior
+
+Scope note: This property identifies the  software procedures of the actionable behaviors.
+
+Domain:       lsa:ActionableBehaior  
+
+Range:          lsa:SoftwareProcedure"""@en .
+
+
+###  http://www.gauss.it/lsa/isControlSpecificationOf
+lsa:isControlSpecificationOf rdf:type owl:ObjectProperty ;
+                             rdfs:domain lsa:ControlStructure ;
+                             rdfs:range lsa:ActionableBehavior ;
+                             rdfs:comment """lsa:isControlSpecificationOf
+
+Scope note:  This property identifies the control structure of behaviors.
+
+inverse:          lsa:hasControlSpecificationOf
+
+Domain:         lsa:ControlStructure
+
+Range:            lsa:ActionableBehaior"""@en .
+
+
+###  http://www.gauss.it/lsa/isExecutableBy
+lsa:isExecutableBy rdf:type owl:ObjectProperty ;
+                   rdfs:domain lsa:ActionableType ;
+                   rdfs:range lsa:SoftwareProcedureExecutor ;
+                   rdfs:comment """lsa:isExecutableBy
+
+Scope note: This property specifies the software procedure executors able to execute the actionable types.
+
+inverse:        lsa:isAbleToExecute
+
+Domain:       lsa:ActionableType
+
+Range:          lsa:SoftwareProcedureExecutor"""@en .
+
+
+###  http://www.gauss.it/lsa/isStateOf
+lsa:isStateOf rdf:type owl:ObjectProperty ;
+              rdfs:domain lsa:State ;
+              rdfs:range ssn:System ;
+              rdfs:comment """lsa:isStateOf
+
+inverse:        lsa:hasState
+
+Scope note: This property specifies the ssn:System characterized by the states .
+
+Domain:        ssn:System
+
+Range:           lsa:State"""@en .
+
+
+###  http://www.gauss.it/lsa/isTimespanOf
+lsa:isTimespanOf rdf:type owl:ObjectProperty ;
+                 rdfs:domain lsa:Timespan ;
+                 rdfs:range lsa:TemporalEntity ;
+                 rdfs:comment """lsa:isTimespanOf 
+
+Scope note: This property identifies the temporal entity of the timespan.
+
+inverse:           lsa:hasTimespan
+
+Domain:          lsa:Timespan
+Range:            lsa:TemporalEntity 
+
+Quantification: many to one, necessary, dependent (1,1:1,n)"""@en .
+
+
+###  http://www.gauss.it/lsa/isTypeOf
+lsa:isTypeOf rdf:type owl:ObjectProperty ;
+             rdfs:domain lsa:Type ;
+             rdfs:comment """lsa:isTypeOf 
+
+Scope note: This property allows typing of owl:Thing through terminalogical classifications of terminological hierarchy or thesaurus.
+
+Inverse:        lsa:hasType
+
+Domain:       lsa:Type 
+
+Range:         owl:Thing"""@en .
+
+
+###  http://www.gauss.it/lsa/madeBy
+lsa:madeBy rdf:type owl:ObjectProperty ;
+           rdfs:domain lsa:SoftwareProcedureExecution ;
+           rdfs:range lsa:SoftwareProcedureExecutor ;
+           rdfs:comment """lsa:madeBy
+
+Scope note: This property identifies one or more procedure executors for a procedure execution.
+
+Inverse of:     lsa:hasExecuted
+
+Domain:        lsa:ProcedureExecution
+
+Range:          lsa:ProcedureExecutor"""@en .
+
+
+###  http://www.gauss.it/lsa/rest
+lsa:rest rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf owl:topObjectProperty ;
+         rdfs:domain lsa:List ;
+         rdfs:comment """lsa:rest
+
+Scope note: This property identifies the rest of the after lsa:first.
+
+Domain:        lsa:List
+
+Range:          owl:Thing"""@en .
+
+
+###  http://www.gauss.it/lsa/usedProcedure
+lsa:usedProcedure rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf sosa:usedProcedure ;
+                  rdfs:domain lsa:SoftwareProcedureExecution ;
+                  rdfs:range lsa:SoftwareProcedure ;
+                  rdfs:comment """lsa:usedProcedure
+
+Subproperty of: sosa:usedProcedure
+
+Scope note: This property identifies procedure executions for a procedure.
+
+Domain:        lsa:ProcedureExecution
+
+Range:          lsa:Procedure"""@en .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#constraintRefersTo
+owlc:constraintRefersTo rdf:type owl:ObjectProperty ;
+                        rdfs:domain owlc:ContextDimensionConstraint ;
+                        rdfs:range owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasConstraint
+owlc:hasConstraint rdf:type owl:ObjectProperty ;
+                   rdfs:domain owlc:ContextDimension ;
+                   rdfs:range owlc:ContextDimensionConstraint .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasDimension
+owlc:hasDimension rdf:type owl:ObjectProperty ;
+                  rdfs:domain owlc:Context ;
+                  rdfs:range owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasObjectValue
+owlc:hasObjectValue rdf:type owl:ObjectProperty ,
+                             owl:FunctionalProperty ;
+                    rdfs:domain owlc:ContextDimension ;
+                    rdfs:range owlc:ContextDimensionValue .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasSubdimension
+owlc:hasSubdimension rdf:type owl:ObjectProperty ;
+                     owl:inverseOf owlc:isSubdimensionOf ;
+                     rdfs:domain owlc:CompositeContextDimension ;
+                     rdfs:range owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#isSubdimensionOf
+owlc:isSubdimensionOf rdf:type owl:ObjectProperty ;
+                      rdfs:domain owlc:ContextDimension ;
+                      rdfs:range owlc:CompositeContextDimension .
+
+
+###  http://www.w3.org/ns/sosa/actsOnProperty
+sosa:actsOnProperty rdf:type owl:ObjectProperty ;
+                    owl:inverseOf sosa:isActedOnBy ;
+                    <http://schema.org/domainIncludes> sosa:Actuation ;
+                    <http://schema.org/rangeIncludes> sosa:ActuatableProperty ;
+                    rdfs:comment "Relation between an Actuation and the property of a FeatureOfInterest it is acting upon."@en ;
+                    rdfs:isDefinedBy sosa: ;
+                    rdfs:label "acts on property"@en ;
+                    <http://www.w3.org/2004/02/skos/core#definition> "Relation between an Actuation and the property of a FeatureOfInterest it is acting upon."@en ;
+                    <http://www.w3.org/2004/02/skos/core#example> "In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degrees Celsius, the property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. "@en .
+
+
+###  http://www.w3.org/ns/sosa/hasFeatureOfInterest
+sosa:hasFeatureOfInterest rdf:type owl:ObjectProperty ;
+                          owl:inverseOf sosa:isFeatureOfInterestOf ;
+                          <http://schema.org/domainIncludes> sosa:Actuation ,
+                                                             sosa:Observation ,
+                                                             sosa:Sampling ;
+                          <http://schema.org/rangeIncludes> sosa:FeatureOfInterest ,
+                                                            sosa:Sample ;
+                          rdfs:comment "A relation between an Observation and the entity whose quality was observed, or between an Actuation and the entity whose property was modified, or between an act of Sampling and the entity that was sampled."@en ;
+                          rdfs:isDefinedBy sosa: ;
+                          rdfs:label "has feature of interest"@en ;
+                          <http://www.w3.org/2004/02/skos/core#definition> "A relation between an Observation and the entity whose quality was observed, or between an Actuation and the entity whose property was modified, or between an act of Sampling and the entity that was sampled."@en ;
+                          <http://www.w3.org/2004/02/skos/core#example> "For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the property is its weight."@en .
+
+
+###  http://www.w3.org/ns/sosa/hasResult
+sosa:hasResult rdf:type owl:ObjectProperty ;
+               owl:inverseOf sosa:isResultOf ;
+               <http://schema.org/domainIncludes> sosa:Actuation ,
+                                                  sosa:Observation ,
+                                                  sosa:Sampling ;
+               <http://schema.org/rangeIncludes> sosa:Result ,
+                                                 sosa:Sample ;
+               rdfs:comment "Relation linking an Observation or Actuation or act of Sampling and a Result or Sample."@en ;
+               rdfs:isDefinedBy sosa: ;
+               rdfs:label "has result"@en ;
+               <http://www.w3.org/2004/02/skos/core#definition> "Relation linking an Observation or Actuation or act of Sampling and a Result or Sample."@en .
+
+
+###  http://www.w3.org/ns/sosa/hasSample
+sosa:hasSample rdf:type owl:ObjectProperty ;
+               owl:inverseOf sosa:isSampleOf ;
+               rdf:type owl:InverseFunctionalProperty ;
+               <http://schema.org/domainIncludes> sosa:FeatureOfInterest ;
+               <http://schema.org/rangeIncludes> sosa:Sample ;
+               rdfs:comment "Relation between a FeatureOfInterest and the Sample used to represent it."@en ;
+               rdfs:isDefinedBy sosa: ;
+               rdfs:label "has sample"@en ;
+               <http://www.w3.org/2004/02/skos/core#definition> "Relation between a FeatureOfInterest and the Sample used to represent it."@en .
+
+
+###  http://www.w3.org/ns/sosa/hosts
+sosa:hosts rdf:type owl:ObjectProperty ;
+           owl:inverseOf sosa:isHostedBy ;
+           owl:propertyChainAxiom ( ssn:inDeployment
+                                    ssn:deployedSystem
+                                  ) ;
+           <http://schema.org/domainIncludes> sosa:Platform ;
+           <http://schema.org/rangeIncludes> sosa:Actuator ,
+                                             sosa:Platform ,
+                                             sosa:Sampler ,
+                                             sosa:Sensor ;
+           rdfs:comment "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it."@en ;
+           rdfs:isDefinedBy sosa: ;
+           rdfs:label "hosts"@en ;
+           <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it."@en .
+
+
+###  http://www.w3.org/ns/sosa/isActedOnBy
+sosa:isActedOnBy rdf:type owl:ObjectProperty ;
+                 <http://schema.org/domainIncludes> sosa:ActuatableProperty ;
+                 <http://schema.org/rangeIncludes> sosa:Actuation ;
+                 rdfs:comment "Relation between an ActuatableProperty of a FeatureOfInterest and an Actuation changing its state."@en ;
+                 rdfs:isDefinedBy sosa: ;
+                 rdfs:label "is acted on by"@en ;
+                 <http://www.w3.org/2004/02/skos/core#definition> "Relation between an ActuatableProperty of a FeatureOfInterest and an Actuation changing its state."@en ;
+                 <http://www.w3.org/2004/02/skos/core#example> "In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degrees Celsius, the property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. "@en .
+
+
+###  http://www.w3.org/ns/sosa/isFeatureOfInterestOf
+sosa:isFeatureOfInterestOf rdf:type owl:ObjectProperty ;
+                           <http://schema.org/domainIncludes> sosa:FeatureOfInterest ,
+                                                              sosa:Sample ;
+                           <http://schema.org/rangeIncludes> sosa:Actuation ,
+                                                             sosa:Observation ,
+                                                             sosa:Sampling ;
+                           rdfs:comment "A relation between a FeatureOfInterest and an Observation about it, an Actuation acting on it, or an act of Sampling that sampled it."@en ;
+                           rdfs:isDefinedBy sosa: ;
+                           rdfs:label "is feature of interest of"@en ;
+                           <http://www.w3.org/2004/02/skos/core#definition> "A relation between a FeatureOfInterest and an Observation about it, an Actuation acting on it, or an act of Sampling that sampled it."@en .
+
+
+###  http://www.w3.org/ns/sosa/isHostedBy
+sosa:isHostedBy rdf:type owl:ObjectProperty ;
+                <http://schema.org/domainIncludes> sosa:Actuator ,
+                                                   sosa:Platform ,
+                                                   sosa:Sampler ,
+                                                   sosa:Sensor ;
+                <http://schema.org/rangeIncludes> sosa:Platform ;
+                rdfs:comment "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by."@en ;
+                rdfs:isDefinedBy sosa: ;
+                rdfs:label "is hosted by"@en ;
+                <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by."@en .
+
+
+###  http://www.w3.org/ns/sosa/isObservedBy
+sosa:isObservedBy rdf:type owl:ObjectProperty ;
+                  owl:inverseOf sosa:observes ;
+                  <http://schema.org/domainIncludes> sosa:ObservableProperty ;
+                  <http://schema.org/rangeIncludes> sosa:Sensor ;
+                  rdfs:comment "Relation between an ObservableProperty and the Sensor able to observe it."@en ;
+                  rdfs:isDefinedBy sosa: ;
+                  rdfs:label "is observed by"@en ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Relation between an ObservableProperty and the Sensor able to observe it."@en .
+
+
+###  http://www.w3.org/ns/sosa/isResultOf
+sosa:isResultOf rdf:type owl:ObjectProperty ;
+                <http://schema.org/domainIncludes> sosa:Result ,
+                                                   sosa:Sample ;
+                <http://schema.org/rangeIncludes> sosa:Actuation ,
+                                                  sosa:Observation ,
+                                                  sosa:Sampling ;
+                rdfs:comment "Relation linking a Result to the Observation or Actuation or act of Sampling that created or caused it."@en ;
+                rdfs:isDefinedBy sosa: ;
+                rdfs:label "is result of"@en ;
+                <http://www.w3.org/2004/02/skos/core#definition> "Relation linking a Result to the Observation or Actuation or act of Sampling that created or caused it."@en .
+
+
+###  http://www.w3.org/ns/sosa/isSampleOf
+sosa:isSampleOf rdf:type owl:ObjectProperty ,
+                         owl:FunctionalProperty ;
+                <http://schema.org/domainIncludes> sosa:Sample ;
+                <http://schema.org/rangeIncludes> sosa:FeatureOfInterest ;
+                rdfs:comment "Relation from a Sample to the FeatureOfInterest that it is intended to be representative of."@en ;
+                rdfs:isDefinedBy sosa: ;
+                rdfs:label "is sample of"@en ;
+                <http://www.w3.org/2004/02/skos/core#definition> "Relation from a Sample to the FeatureOfInterest that it is intended to be representative of."@en .
+
+
+###  http://www.w3.org/ns/sosa/madeActuation
+sosa:madeActuation rdf:type owl:ObjectProperty ;
+                   owl:inverseOf sosa:madeByActuator ;
+                   <http://schema.org/domainIncludes> sosa:Actuator ;
+                   <http://schema.org/rangeIncludes> sosa:Actuation ;
+                   rdfs:comment "Relation between an Actuator and the Actuation it has made."@en ;
+                   rdfs:isDefinedBy sosa: ;
+                   rdfs:label "made actuation"@en ;
+                   <http://www.w3.org/2004/02/skos/core#definition> "Relation between an Actuator and the Actuation it has made."@en .
+
+
+###  http://www.w3.org/ns/sosa/madeByActuator
+sosa:madeByActuator rdf:type owl:ObjectProperty ;
+                    <http://schema.org/domainIncludes> sosa:Actuation ;
+                    <http://schema.org/rangeIncludes> sosa:Actuator ;
+                    rdfs:comment "Relation linking an Actuation to the Actuator that made that Actuation."@en ;
+                    rdfs:isDefinedBy sosa: ;
+                    rdfs:label "made by actuator"@en ;
+                    <http://www.w3.org/2004/02/skos/core#definition> "Relation linking an Actuation to the Actuator that made that Actuation."@en .
+
+
+###  http://www.w3.org/ns/sosa/madeBySampler
+sosa:madeBySampler rdf:type owl:ObjectProperty ;
+                   owl:inverseOf sosa:madeSampling ;
+                   <http://schema.org/domainIncludes> sosa:Sampling ;
+                   <http://schema.org/rangeIncludes> sosa:Sampler ;
+                   rdfs:comment "Relation linking an act of Sampling to the Sampler (sampling device or entity) that made it."@en ;
+                   rdfs:isDefinedBy sosa: ;
+                   rdfs:label "made by sampler"@en ;
+                   <http://www.w3.org/2004/02/skos/core#definition> "Relation linking an act of Sampling to the Sampler (sampling device or entity) that made it."@en .
+
+
+###  http://www.w3.org/ns/sosa/madeBySensor
+sosa:madeBySensor rdf:type owl:ObjectProperty ;
+                  owl:inverseOf sosa:madeObservation ;
+                  <http://schema.org/domainIncludes> sosa:Observation ;
+                  <http://schema.org/rangeIncludes> sosa:Sensor ;
+                  rdfs:comment "Relation between an Observation and the Sensor which made the Observation."@en ;
+                  rdfs:isDefinedBy sosa: ;
+                  rdfs:label "made by sensor"@en ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Relation between an Observation and the Sensor which made the Observation."@en .
+
+
+###  http://www.w3.org/ns/sosa/madeObservation
+sosa:madeObservation rdf:type owl:ObjectProperty ;
+                     <http://schema.org/domainIncludes> sosa:Sensor ;
+                     <http://schema.org/rangeIncludes> sosa:Observation ;
+                     rdfs:comment "Relation between a Sensor and an Observation made by the Sensor."@en ;
+                     rdfs:isDefinedBy sosa: ;
+                     rdfs:label "made observation"@en ;
+                     <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Sensor and an Observation made by the Sensor."@en .
+
+
+###  http://www.w3.org/ns/sosa/madeSampling
+sosa:madeSampling rdf:type owl:ObjectProperty ;
+                  <http://schema.org/domainIncludes> sosa:Sampler ;
+                  <http://schema.org/rangeIncludes> sosa:Sampling ;
+                  rdfs:comment "Relation between a Sampler (sampling device or entity) and the Sampling act it performed."@en ;
+                  rdfs:isDefinedBy sosa: ;
+                  rdfs:label "made sampling"@en ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Sampler (sampling device or entity) and the Sampling act it performed."@en .
+
+
+###  http://www.w3.org/ns/sosa/observedProperty
+sosa:observedProperty rdf:type owl:ObjectProperty ;
+                      <http://schema.org/domainIncludes> sosa:Observation ;
+                      <http://schema.org/rangeIncludes> sosa:ObservableProperty ;
+                      rdfs:comment "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation."@en ;
+                      rdfs:isDefinedBy sosa: ;
+                      rdfs:label "observed property"@en ;
+                      <http://www.w3.org/2004/02/skos/core#definition> "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation."@en .
+
+
+###  http://www.w3.org/ns/sosa/observes
+sosa:observes rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf ssn:forProperty .
+
+
+###  http://www.w3.org/ns/sosa/phenomenonTime
+sosa:phenomenonTime rdf:type owl:ObjectProperty ;
+                    <http://schema.org/domainIncludes> sosa:Actuation ,
+                                                       sosa:Observation ,
+                                                       sosa:Sampling ;
+                    rdfs:comment "The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest. Not necessarily the same as the resultTime. May be an Interval or an Instant, or some other compound TemporalEntity."@en ;
+                    rdfs:isDefinedBy sosa: ;
+                    rdfs:label "phenomenon time"@en ;
+                    <http://www.w3.org/2004/02/skos/core#definition> "The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest. Not necessarily the same as the resultTime. May be an Interval or an Instant, or some other compound TemporalEntity."@en .
+
+
+###  http://www.w3.org/ns/sosa/usedProcedure
+sosa:usedProcedure rdf:type owl:ObjectProperty ;
+                   owl:propertyChainAxiom ( sosa:madeByActuator
+                                            ssn:implements
+                                          ) ,
+                                          ( sosa:madeBySampler
+                                            ssn:implements
+                                          ) ,
+                                          ( sosa:madeBySensor
+                                            ssn:implements
+                                          ) ;
+                   <http://schema.org/domainIncludes> sosa:Actuation ,
+                                                      sosa:Observation ,
+                                                      sosa:Sampling ;
+                   <http://schema.org/rangeIncludes> sosa:Procedure ;
+                   rdfs:comment "A relation to link to a re-usable Procedure used in making an Observation, an Actuation, or a Sample, typically through a Sensor, Actuator or Sampler."@en ;
+                   rdfs:isDefinedBy sosa: ;
+                   rdfs:label "used procedure"@en ;
+                   <http://www.w3.org/2004/02/skos/core#definition> "A relation to link to a re-usable Procedure used in making an Observation, an Actuation, or a Sample, typically through a Sensor, Actuator or Sampler."@en .
+
+
+###  http://www.w3.org/ns/ssn/deployedOnPlatform
+ssn:deployedOnPlatform rdf:type owl:ObjectProperty ;
+                       owl:inverseOf ssn:inDeployment ;
+                       rdfs:comment "Relation between a Deployment and the Platform on which the Systems are deployed."@en ;
+                       rdfs:isDefinedBy ssn: ;
+                       rdfs:label "deployed on platform"@en ;
+                       <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Deployment and the Platform on which the Systems are deployed."@en .
+
+
+###  http://www.w3.org/ns/ssn/deployedSystem
+ssn:deployedSystem rdf:type owl:ObjectProperty ;
+                   owl:inverseOf ssn:hasDeployment ;
+                   rdfs:comment "Relation between a Deployment and a deployed System."@en ;
+                   rdfs:isDefinedBy ssn: ;
+                   rdfs:label "deployed system"@en ;
+                   <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Deployment and a deployed System."@en .
+
+
+###  http://www.w3.org/ns/ssn/detects
+ssn:detects rdf:type owl:ObjectProperty ;
+            rdfs:comment "A relation from a Sensor to the Stimulus that the Sensor can detect. The Stimulus itself will be serving as a proxy for some ObservableProperty."@en ,
+                         "A relation from a Sensor to the Stimulus that the Sensor detects. The Stimulus itself will be serving as a proxy for some ObservableProperty."@en ;
+            rdfs:isDefinedBy ssn: ;
+            rdfs:label "detects"@en ;
+            <http://www.w3.org/2004/02/skos/core#definition> "A relation from a Sensor to the Stimulus that the Sensor detects. The Stimulus itself will be serving as a proxy for some ObservableProperty."@en .
+
+
+###  http://www.w3.org/ns/ssn/forProperty
+ssn:forProperty rdf:type owl:ObjectProperty ;
+                rdfs:comment "A relation between some aspect of an entity and a Property."@en ;
+                rdfs:isDefinedBy ssn: ;
+                rdfs:label "for property"@en ;
+                <http://www.w3.org/2004/02/skos/core#definition> "A relation between some aspect of an entity and a Property."@en ;
+                <http://www.w3.org/2004/02/skos/core#example> "For example, from a Sensor to the properties it can observe; from an Actuator to the properties it can act on; from a Deployment to the properties it was installed to observe or act on; from a SystemCapability to the Property the capability is described for."@en .
+
+
+###  http://www.w3.org/ns/ssn/hasDeployment
+ssn:hasDeployment rdf:type owl:ObjectProperty ;
+                  rdfs:comment "Relation between a System and a Deployment, recording that the System is deployed in that Deployment."@en ;
+                  rdfs:isDefinedBy ssn: ;
+                  rdfs:label "has deployment"@en ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Relation between a System and a Deployment, recording that the System is deployed in that Deployment."@en .
+
+
+###  http://www.w3.org/ns/ssn/hasInput
+ssn:hasInput rdf:type owl:ObjectProperty ;
+             rdfs:comment "Relation between a Procedure and an Input to it."@en ;
+             rdfs:isDefinedBy ssn: ;
+             rdfs:label "has input"@en ;
+             <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Procedure and an Input to it."@en .
+
+
+###  http://www.w3.org/ns/ssn/hasOutput
+ssn:hasOutput rdf:type owl:ObjectProperty ;
+              rdfs:comment "Relation between a Procedure and an Output of it."@en ;
+              rdfs:isDefinedBy ssn: ;
+              rdfs:label "has output"@en ;
+              <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Procedure and an Output of it."@en .
+
+
+###  http://www.w3.org/ns/ssn/hasProperty
+ssn:hasProperty rdf:type owl:ObjectProperty ;
+                owl:inverseOf ssn:isPropertyOf ;
+                rdfs:comment "Relation between an entity and a Property of that entity."@en ;
+                rdfs:isDefinedBy ssn: ;
+                rdfs:label "has property"@en ;
+                <http://www.w3.org/2004/02/skos/core#definition> "Relation between an entity and a Property of that entity."@en .
+
+
+###  http://www.w3.org/ns/ssn/hasSubSystem
+ssn:hasSubSystem rdf:type owl:ObjectProperty ;
+                 rdfs:comment "Relation between a System and its component parts."@en ;
+                 rdfs:isDefinedBy ssn: ;
+                 rdfs:label "has subsystem"@en ;
+                 <http://www.w3.org/2004/02/skos/core#definition> "Relation between a System and its component parts."@en .
+
+
+###  http://www.w3.org/ns/ssn/implementedBy
+ssn:implementedBy rdf:type owl:ObjectProperty ;
+                  owl:inverseOf ssn:implements ;
+                  rdfs:comment "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way."@en ;
+                  rdfs:isDefinedBy ssn: ;
+                  rdfs:label "implemented by"@en ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Procedure (an algorithm, procedure or method) and an entity that implements that Procedure in some executable way."@en ;
+                  <http://www.w3.org/2004/02/skos/core#example> "For example, the relationship between a scientific measuring Procedure and a sensor that senses via that Procedure."@en .
+
+
+###  http://www.w3.org/ns/ssn/implements
+ssn:implements rdf:type owl:ObjectProperty ;
+               rdfs:comment "Relation between an entity that implements a Procedure in some executable way and the Procedure (an algorithm, procedure or method)."@en ;
+               rdfs:isDefinedBy ssn: ;
+               rdfs:label "implements"@en ;
+               <http://www.w3.org/2004/02/skos/core#definition> "Relation between an entity that implements a Procedure in some executable way and the Procedure (an algorithm, procedure or method)."@en ;
+               <http://www.w3.org/2004/02/skos/core#example> "For example, the relationship between a sensor and the scientific measuring Procedure via which it senses."@en .
+
+
+###  http://www.w3.org/ns/ssn/inDeployment
+ssn:inDeployment rdf:type owl:ObjectProperty ;
+                 rdfs:comment "Relation between a Platform and a Deployment, meaning that the deployedSystems of the Deployment are hosted on the Platform."@en ;
+                 rdfs:isDefinedBy ssn: ;
+                 rdfs:label "in deployment"@en ;
+                 <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Platform and a Deployment, meaning that the deployedSystems of the Deployment are hosted on the Platform."@en ;
+                 <http://www.w3.org/2004/02/skos/core#example> "For example, a relation between a buoy and a deployment of several Sensors."@en .
+
+
+###  http://www.w3.org/ns/ssn/isPropertyOf
+ssn:isPropertyOf rdf:type owl:ObjectProperty ;
+                 rdfs:comment "Relation between a Property and the entity it belongs to."@en ;
+                 rdfs:isDefinedBy ssn: ;
+                 rdfs:label "is property of"@en ;
+                 <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Property and the entity it belongs to."@en .
+
+
+###  http://www.w3.org/ns/ssn/isProxyFor
+ssn:isProxyFor rdf:type owl:ObjectProperty ;
+               rdfs:comment "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for."@en ;
+               rdfs:isDefinedBy ssn: ;
+               rdfs:label "is proxy for"@en ;
+               <http://www.w3.org/2004/02/skos/core#definition> "A relation from a Stimulus to the Property that the Stimulus is serving as a proxy for."@en ;
+               <http://www.w3.org/2004/02/skos/core#example> "For example, the expansion of quicksilver is a stimulus that serves as a proxy for some temperature property. An increase or decrease in the velocity of spinning cups on a wind sensor is serving as a proxy for the wind speed."@en .
+
+
+###  http://www.w3.org/ns/ssn/wasOriginatedBy
+ssn:wasOriginatedBy rdf:type owl:ObjectProperty ,
+                             owl:FunctionalProperty ;
+                    rdfs:comment "Relation between an Observation and the Stimulus that originated it."@en ;
+                    rdfs:isDefinedBy ssn: ;
+                    rdfs:label "was originated by"@en ;
+                    <http://www.w3.org/2004/02/skos/core#definition> "Relation between an Observation and the Stimulus that originated it."@en .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.gauss.it/lsa/beginningIsQualifiedBy
+lsa:beginningIsQualifiedBy rdf:type owl:DatatypeProperty ;
+                           rdfs:domain lsa:Timespan .
+
+
+###  http://www.gauss.it/lsa/endIsQualifiedBy
+lsa:endIsQualifiedBy rdf:type owl:DatatypeProperty ;
+                     rdfs:domain lsa:Timespan .
+
+
+###  http://www.gauss.it/lsa/hasCode
+lsa:hasCode rdf:type owl:DatatypeProperty ;
+            rdfs:domain lsa:Actionable .
+
+
+###  http://www.gauss.it/lsa/hasConfidence
+lsa:hasConfidence rdf:type owl:DatatypeProperty ;
+                  rdfs:domain ssn:System ;
+                  rdfs:range xsd:decimal .
+
+
+###  http://www.gauss.it/lsa/hasDuration
+lsa:hasDuration rdf:type owl:DatatypeProperty ;
+                rdfs:domain lsa:Timespan .
+
+
+###  http://www.gauss.it/lsa/hasPriority
+lsa:hasPriority rdf:type owl:DatatypeProperty .
+
+
+###  http://www.gauss.it/lsa/hasURL
+lsa:hasURL rdf:type owl:DatatypeProperty ;
+           rdfs:domain lsa:Actionable .
+
+
+###  http://www.gauss.it/lsa/isDefinedByTime
+lsa:isDefinedByTime rdf:type owl:DatatypeProperty ;
+                    rdfs:domain lsa:Timespan ;
+                    rdfs:range xsd:dateTime .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasStringValue
+owlc:hasStringValue rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf owlc:hasValue ;
+                    rdfs:range xsd:string .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasValue
+owlc:hasValue rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:domain owlc:ContextDimension .
+
+
+###  http://www.w3.org/ns/sosa/hasSimpleResult
+sosa:hasSimpleResult rdf:type owl:DatatypeProperty ;
+                     <http://schema.org/domainIncludes> sosa:Actuation ,
+                                                        sosa:Observation ,
+                                                        sosa:Sampling ;
+                     rdfs:comment "The simple value of an Observation or Actuation or act of Sampling."@en ;
+                     rdfs:isDefinedBy sosa: ;
+                     rdfs:label "has simple result"@en ;
+                     <http://www.w3.org/2004/02/skos/core#definition> "The simple value of an Observation or Actuation or act of Sampling."@en ;
+                     <http://www.w3.org/2004/02/skos/core#example> "For instance, the values 23 or true."@en .
+
+
+###  http://www.w3.org/ns/sosa/resultTime
+sosa:resultTime rdf:type owl:DatatypeProperty ;
+                rdfs:range xsd:dateTime ;
+                <http://schema.org/domainIncludes> sosa:Actuation ,
+                                                   sosa:Observation ,
+                                                   sosa:Sampling ;
+                rdfs:comment "The result time is the instant of time when the Observation, Actuation or Sampling activity was completed."@en ;
+                rdfs:isDefinedBy sosa: ;
+                rdfs:label "result time"@en ;
+                <http://www.w3.org/2004/02/skos/core#definition> "The result time is the instant of time when the Observation, Actuation or Sampling activity was completed."@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://example.museum.gauss.it/DoorRoomEntrance
+gmus:DoorRoomEntrance rdf:type owl:Class ;
+                      owl:equivalentClass [ owl:intersectionOf ( lsa:SoftwareProcedure
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty lsa:hasBehavior ;
+                                                                   owl:hasValue <http://example.museum.gauss.it/doorRoomEntrance/behavior>
+                                                                 ]
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty ssn:hasInput ;
+                                                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                   owl:onClass gmus:PeopleInRoomProperty
+                                                                 ]
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty ssn:hasInput ;
+                                                                   owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                                                                   owl:onClass gmus:PresenceInSensorZoneProperty
+                                                                 ]
+                                                               ) ;
+                                            rdf:type owl:Class
+                                          ] ;
+                      rdfs:subClassOf lsa:SoftwareProcedure .
+
+
+###  http://example.museum.gauss.it/InfraredPresenceSensor
+gmus:InfraredPresenceSensor rdf:type owl:Class ;
+                            rdfs:subClassOf lsa:LogicalSensor ,
+                                            sosa:Sensor .
+
+
+###  http://example.museum.gauss.it/PeopleInRoomProperty
+gmus:PeopleInRoomProperty rdf:type owl:Class ;
+                          rdfs:subClassOf sosa:ObservableProperty .
+
+
+###  http://example.museum.gauss.it/PresenceInSensorZoneProperty
+gmus:PresenceInSensorZoneProperty rdf:type owl:Class ;
+                                  rdfs:subClassOf sosa:ObservableProperty .
+
+
+###  http://example.museum.gauss.it/SensorReconfiguration
+gmus:SensorReconfiguration rdf:type owl:Class ;
+                           owl:equivalentClass [ owl:intersectionOf ( lsa:SoftwareProcedure
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty lsa:hasBehavior ;
+                                                                        owl:hasValue <http://example.museum.gauss.it/sensorReconfigurator/behavior>
+                                                                      ]
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty ssn:hasInput ;
+                                                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                        owl:onClass lsa:State
+                                                                      ]
+                                                                    ) ;
+                                                 rdf:type owl:Class
+                                               ] ;
+                           rdfs:subClassOf lsa:SoftwareProcedure .
+
+
+###  http://example.museum.gauss.it/SensorReconfigurator
+gmus:SensorReconfigurator rdf:type owl:Class ;
+                          rdfs:subClassOf lsa:LogicalActuator .
+
+
+###  http://example.museum.gauss.it/SimpleDetector
+gmus:SimpleDetector rdf:type owl:Class ;
+                    owl:equivalentClass [ owl:intersectionOf ( lsa:SoftwareProcedure
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty lsa:hasBehavior ;
+                                                                 owl:hasValue <http://example.museum.gauss.it/faultDetect/behavior>
+                                                               ]
+                                                               [ rdf:type owl:Restriction ;
+                                                                 owl:onProperty ssn:hasInput ;
+                                                                 owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                 owl:onClass lsa:State
+                                                               ]
+                                                             ) ;
+                                          rdf:type owl:Class
+                                        ] ;
+                    rdfs:subClassOf lsa:SoftwareProcedure .
+
+
+###  http://example.museum.gauss.it/ThermalStimulus
+gmus:ThermalStimulus rdf:type owl:Class ;
+                     rdfs:subClassOf ssn:Stimulus .
+
+
+###  http://purl.org/vocommons/voaf#Vocabulary
+<http://purl.org/vocommons/voaf#Vocabulary> rdf:type owl:Class .
+
+
+###  http://test.unisannio.it/PresenceInSensorZoneProperty
+<http://test.unisannio.it/PresenceInSensorZoneProperty> rdf:type owl:Class ;
+                                                        rdfs:subClassOf sosa:ObservableProperty .
+
+
+###  http://www.gauss.it/lsa/Actionable
+lsa:Actionable rdf:type owl:Class ;
+               rdfs:comment """lsa: Actionable
+
+Scope: Computer Program Code
+
+Properties: lsa:isActionablePartOf lsa:ActionableBehavior"""@en .
+
+
+###  http://www.gauss.it/lsa/ActionableBehavior
+lsa:ActionableBehavior rdf:type owl:Class ;
+                       rdfs:comment """lsa:ActionableBehavior
+
+Scope note: Computer program code that has an objectively recognizable structure.
+
+Properties:
+                     lsa:hasControlSpecification: lsa:ControlStructure                      
+                     lsa:hasActionSpecification: lsa:Actionable"""@en .
+
+
+###  http://www.gauss.it/lsa/ActionableType
+lsa:ActionableType rdf:type owl:Class ;
+                   rdfs:subClassOf lsa:Type ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty lsa:hasType ;
+                                     owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                     owl:onClass lsa:Type
+                                   ] ;
+                   rdfs:comment """lsa:ActionableType
+
+Scope note:      This class includes terminological classifications of computer program code or part of it that link actionable items of Actionable Behaviors to the related executors.
+
+Examples:          sparqlQuery, restQuery, ... 
+
+Properties:         lsa:isExecutableBy lsa:SoftwareProcedureExecutor."""@en .
+
+
+###  http://www.gauss.it/lsa/BindingState
+lsa:BindingState rdf:type owl:Class ;
+                 rdfs:subClassOf lsa:State ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty lsa:hasType ;
+                                   owl:allValuesFrom lsa:BindingType
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty lsa:hasType ;
+                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onClass lsa:Type
+                                 ] ;
+                 rdfs:comment """lsa:BindingState
+
+Subclass of:     lsa:State
+
+Scope note:     The Class represents a unique defined binding condition of a ssn:System in a limited contiguous extent in time (gmus:Attached, gmus:Inactive, gmus:Detacched). It is referred to the bi-casual connection between physical sensors and their representation in the knowledge base."""@en .
+
+
+###  http://www.gauss.it/lsa/BindingType
+lsa:BindingType rdf:type owl:Class ;
+                rdfs:subClassOf lsa:Type ;
+                rdfs:comment """lsa:BindingType
+
+Scope note:      This class includes terminological classifications of binding states.
+
+Examples:          lsa:inactive, lsa:attached, lsa:detached"""@en .
+
+
+###  http://www.gauss.it/lsa/ControlStructure
+lsa:ControlStructure rdf:type owl:Class ;
+                     rdfs:comment """lsa:ControlStructure
+
+
+Scope note:      Control Structure of a Procedure Behavior."""@en .
+
+
+###  http://www.gauss.it/lsa/FaultDetector
+lsa:FaultDetector rdf:type owl:Class ;
+                  rdfs:subClassOf sosa:Sensor .
+
+
+###  http://www.gauss.it/lsa/List
+lsa:List rdf:type owl:Class ;
+         rdfs:subClassOf lsa:ControlStructure ;
+         rdfs:comment """lsa:List
+
+Scope: Class that can be used to build descriptions of lists and other list-like structures.
+
+Properties: 
+                     lsa:first
+                     lsa:rest"""@en .
+
+
+###  http://www.gauss.it/lsa/LogicalActuator
+lsa:LogicalActuator rdf:type owl:Class ;
+                    rdfs:subClassOf sosa:Actuator ;
+                    rdfs:comment """lsa:LogicalActuator
+
+Subclass of:     sosa:Actuator
+
+Scope note:     Actuators that act at logical level modifying the knowledge stored in the triple store."""@en .
+
+
+###  http://www.gauss.it/lsa/LogicalSensor
+lsa:LogicalSensor rdf:type owl:Class ;
+                  rdfs:subClassOf sosa:Sensor ;
+                  rdfs:comment """lsa:LogicalSensor
+
+Subclass of:     sosa:Sensor
+
+Scope note:     Sensors defined through the composition of available sensors (physical or virtual ones)."""@en .
+
+
+###  http://www.gauss.it/lsa/PeopleInRoomProperty
+lsa:PeopleInRoomProperty rdf:type owl:Class ;
+                         rdfs:subClassOf sosa:ObservableProperty .
+
+
+###  http://www.gauss.it/lsa/QueryEngine
+lsa:QueryEngine rdf:type owl:Class ;
+                rdfs:subClassOf lsa:SoftwareProcedureExecutor ;
+                rdfs:comment """lsa:QueryEngine
+
+Scope: This class includes engines able to perform queries."""@en .
+
+
+###  http://www.gauss.it/lsa/RequestEngine
+lsa:RequestEngine rdf:type owl:Class ;
+                  rdfs:subClassOf lsa:SoftwareProcedureExecutor ;
+                  rdfs:comment """lsa:RequestEngine
+
+Scope: This class includes engines able to manage request operations."""@en .
+
+
+###  http://www.gauss.it/lsa/SoftwareProcedure
+lsa:SoftwareProcedure rdf:type owl:Class ;
+                      owl:equivalentClass [ owl:intersectionOf ( sosa:Procedure
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty lsa:hasBehavior ;
+                                                                   owl:minCardinality "1"^^xsd:nonNegativeInteger
+                                                                 ]
+                                                               ) ;
+                                            rdf:type owl:Class
+                                          ] ;
+                      rdfs:subClassOf sosa:Procedure ;
+                      rdfs:comment """lsa:SoftwareProcedure
+
+Subclass of:     sosa:Procedure
+
+Scope note:     Documented plans for the execution of actions by software agents. It is a sosa:Procedure that has an association with at least an actionable behavior. 
+
+Properties:
+                        ssn:hasInput: ssn:Input
+                        ssn:hasOutput: ssn:Output
+                        lsa:hasBehavior: lsa:ActionableBehaviour"""@en .
+
+
+###  http://www.gauss.it/lsa/SoftwareProcedureExecution
+lsa:SoftwareProcedureExecution rdf:type owl:Class ;
+                               rdfs:comment """lsa:SoftwareProcedureExecution
+
+Subclass of:     sosa:Procedure
+
+Scope note:      Execution of a lsa:SoftwareProcedure, i.e. a specific executed code. 
+
+Properties:
+                    lsa:madeBy lsa:SoftwareProcedureExecutor
+                    lsa:executes lsa:SoftwareProcedure"""@en .
+
+
+###  http://www.gauss.it/lsa/SoftwareProcedureExecutor
+lsa:SoftwareProcedureExecutor rdf:type owl:Class ;
+                              rdfs:comment """lsa:SoftwareProcedureExecutor
+
+Subclass of:        lsa:QueryEngine, lsa:RequestEngine     
+
+Superclass of:     sosa:Procedure
+
+Scope note:        Software agents  (e.g. engines) for the execution of software procedures. 
+
+Properties:
+                             ssn:hasInput: ssn:Input
+                             ssn:hasOutput: ssn:Output
+                             lsa:hasBehavior: Actionable"""@en .
+
+
+###  http://www.gauss.it/lsa/State
+lsa:State rdf:type owl:Class ;
+          rdfs:subClassOf lsa:TemporalEntity ,
+                          owlc:ContextDimension ,
+                          sosa:ActuatableProperty ,
+                          sosa:ObservableProperty ,
+                          ssn:Property ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty lsa:isStateOf ;
+                            owl:someValuesFrom ssn:System
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty lsa:hasTimespan ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass lsa:Timespan
+                          ] ;
+          rdfs:comment """lsa:State
+
+Subclass of:     lsa:TemporalEntity
+
+Scope note:     The Class represents a defined condition of a ssn:System, in a limited contiguous extent in time.
+
+Properties:       lsa:isStateOf ssn:System"""@en .
+
+
+###  http://www.gauss.it/lsa/TemporalEntity
+lsa:TemporalEntity rdf:type owl:Class ;
+                   rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                     owl:onProperty lsa:hasTimespan ;
+                                     owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                     owl:onClass lsa:Timespan
+                                   ] ;
+                   rdfs:comment """lsa:TemporalEntity
+
+Scope note:  Phenomena and states which happen over a limited extent in time.
+
+Proprieties:   lsa:hasTimespan lsa:Timespan"""@en .
+
+
+###  http://www.gauss.it/lsa/Timespan
+lsa:Timespan rdf:type owl:Class ;
+             rdfs:comment """lsa:Timespan
+
+Scope: includes temporal extents qualified by a beginning, an end or a duration."""@en .
+
+
+###  http://www.gauss.it/lsa/Type
+lsa:Type rdf:type owl:Class ;
+         rdfs:comment """lsa:Type
+
+Scope note:    This class includes terminological classifications of owl:Thing.
+
+Properties:       lsa:isTypeOf owl:Thing"""@en .
+
+
+###  http://www.gauss.it/lsa/WorkingState
+lsa:WorkingState rdf:type owl:Class ;
+                 rdfs:subClassOf lsa:State ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty lsa:hasType ;
+                                   owl:allValuesFrom lsa:WorkingType
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty lsa:hasType ;
+                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onClass lsa:Type
+                                 ] ;
+                 rdfs:comment """lsa:WorkingState
+
+Subclass of:     lsa:State
+
+Scope note:     The Class represents a defined working condition of a ssn:System in a limited contiguous extent in time."""@en .
+
+
+###  http://www.gauss.it/lsa/WorkingType
+lsa:WorkingType rdf:type owl:Class ;
+                rdfs:subClassOf lsa:Type ;
+                rdfs:comment """lsa:WorkingType
+
+Scope note:      This class includes terminological classifications of working states.
+
+Examples:          lsa:normalState, lsa:faultyState"""@en .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Agent
+owlc:Agent rdf:type owl:Class ;
+           rdfs:subClassOf owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#AtomicContextDimension
+owlc:AtomicContextDimension rdf:type owl:Class ;
+                            rdfs:subClassOf owlc:ContextDimension ;
+                            owl:disjointWith owlc:CompositeContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#CompositeContextDimension
+owlc:CompositeContextDimension rdf:type owl:Class ;
+                               rdfs:subClassOf owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Context
+owlc:Context rdf:type owl:Class .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension
+owlc:ContextDimension rdf:type owl:Class .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimensionConstraint
+owlc:ContextDimensionConstraint rdf:type owl:Class .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimensionValue
+owlc:ContextDimensionValue rdf:type owl:Class .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Country
+owlc:Country rdf:type owl:Class ;
+             rdfs:subClassOf owlc:Location .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#DesktopComputer
+owlc:DesktopComputer rdf:type owl:Class ;
+                     rdfs:subClassOf owlc:HardwareAgent .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HardwareAgent
+owlc:HardwareAgent rdf:type owl:Class ;
+                   rdfs:subClassOf owlc:Agent .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Home
+owlc:Home rdf:type owl:Class ;
+          rdfs:subClassOf owlc:Location .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HumanAgent
+owlc:HumanAgent rdf:type owl:Class ;
+                rdfs:subClassOf owlc:Agent ;
+                owl:disjointWith owlc:SoftwareAgent .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Laptop
+owlc:Laptop rdf:type owl:Class ;
+            rdfs:subClassOf owlc:HardwareAgent .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Location
+owlc:Location rdf:type owl:Class ;
+              rdfs:subClassOf owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#PhysicalEnvironment
+owlc:PhysicalEnvironment rdf:type owl:Class ;
+                         rdfs:subClassOf owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Preferences
+owlc:Preferences rdf:type owl:Class ;
+                 rdfs:subClassOf owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Role
+owlc:Role rdf:type owl:Class ;
+          rdfs:subClassOf owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Room
+owlc:Room rdf:type owl:Class ;
+          rdfs:subClassOf owlc:Location .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Smartphone
+owlc:Smartphone rdf:type owl:Class ;
+                rdfs:subClassOf owlc:HardwareAgent .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#SoftwareAgent
+owlc:SoftwareAgent rdf:type owl:Class ;
+                   rdfs:subClassOf owlc:Agent .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Street
+owlc:Street rdf:type owl:Class ;
+            rdfs:subClassOf owlc:Location .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Time
+owlc:Time rdf:type owl:Class ;
+          rdfs:subClassOf owlc:ContextDimension .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#WebService
+owlc:WebService rdf:type owl:Class ;
+                rdfs:subClassOf owlc:SoftwareAgent .
+
+
+###  http://www.w3.org/ns/sosa/ActuatableProperty
+sosa:ActuatableProperty rdf:type owl:Class ;
+                        rdfs:subClassOf ssn:Property ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty sosa:isActedOnBy ;
+                                          owl:allValuesFrom sosa:Actuation
+                                        ] ;
+                        rdfs:comment "An actuatable quality (property, characteristic) of a FeatureOfInterest."@en ;
+                        rdfs:isDefinedBy sosa: ;
+                        rdfs:label "Actuatable Property"@en ;
+                        <http://www.w3.org/2004/02/skos/core#definition> "An actuatable quality (property, characteristic) of a FeatureOfInterest."@en ;
+                        <http://www.w3.org/2004/02/skos/core#example> "A window actuator acts by changing the state between a frame and a window. The ability of the window to be opened and closed is its ActuatableProperty."@en .
+
+
+###  http://www.w3.org/ns/sosa/Actuation
+sosa:Actuation rdf:type owl:Class ;
+               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:actsOnProperty ;
+                                 owl:allValuesFrom sosa:ActuatableProperty
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:hasFeatureOfInterest ;
+                                 owl:allValuesFrom sosa:FeatureOfInterest
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:hasResult ;
+                                 owl:allValuesFrom sosa:Result
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:madeByActuator ;
+                                 owl:allValuesFrom sosa:Actuator
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:usedProcedure ;
+                                 owl:allValuesFrom sosa:Procedure
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:actsOnProperty ;
+                                 owl:minCardinality "1"^^xsd:nonNegativeInteger
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:hasResult ;
+                                 owl:minCardinality "1"^^xsd:nonNegativeInteger
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:hasFeatureOfInterest ;
+                                 owl:cardinality "1"^^xsd:nonNegativeInteger
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:madeByActuator ;
+                                 owl:cardinality "1"^^xsd:nonNegativeInteger
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty sosa:resultTime ;
+                                 owl:cardinality "1"^^xsd:nonNegativeInteger
+                               ] ;
+               rdfs:comment "An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."@en ;
+               rdfs:isDefinedBy sosa: ;
+               rdfs:label "Actuation"@en ;
+               <http://www.w3.org/2004/02/skos/core#definition> "An Actuation carries out an (Actuation) Procedure to change the state of the world using an Actuator."@en ;
+               <http://www.w3.org/2004/02/skos/core#example> "The activity of automatically closing a window if the temperature in a room drops below 20 degree Celsius. The activity is the Actuation and the device that closes the window is the Actuator. The Procedure is the rule, plan, or specification that defines the conditions that triggers the Actuation, here a drop in temperature. "@en .
+
+
+###  http://www.w3.org/ns/sosa/Actuator
+sosa:Actuator rdf:type owl:Class ;
+              rdfs:subClassOf ssn:System ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:madeActuation ;
+                                owl:allValuesFrom sosa:Actuation
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty ssn:forProperty ;
+                                owl:allValuesFrom sosa:ActuatableProperty
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty ssn:implements ;
+                                owl:minCardinality "1"^^xsd:nonNegativeInteger
+                              ] ;
+              rdfs:comment "A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."@en ;
+              rdfs:isDefinedBy sosa: ;
+              rdfs:label "Actuator"@en ;
+              <http://www.w3.org/2004/02/skos/core#definition> "A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world."@en ;
+              <http://www.w3.org/2004/02/skos/core#example> "A window actuator for automatic window control, i.e., opening or closing the window."@en .
+
+
+###  http://www.w3.org/ns/sosa/FeatureOfInterest
+sosa:FeatureOfInterest rdf:type owl:Class ;
+                       rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                         owl:onProperty sosa:hasSample ;
+                                         owl:allValuesFrom sosa:Sample
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty ssn:hasProperty ;
+                                         owl:allValuesFrom ssn:Property
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty ssn:hasProperty ;
+                                         owl:minCardinality "1"^^xsd:nonNegativeInteger
+                                       ] ;
+                       rdfs:comment "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling."@en ;
+                       rdfs:isDefinedBy sosa: ;
+                       rdfs:label "Feature Of Interest"@en ;
+                       <http://www.w3.org/2004/02/skos/core#definition> "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling."@en ;
+                       <http://www.w3.org/2004/02/skos/core#example> "When measuring the height of a tree, the height is the observed ObservableProperty, 20m may be the Result of the Observation, and the tree is the FeatureOfInterest. A window is a FeatureOfInterest for an automatic window control Actuator."@en .
+
+
+###  http://www.w3.org/ns/sosa/ObservableProperty
+sosa:ObservableProperty rdf:type owl:Class ;
+                        rdfs:subClassOf ssn:Property ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty sosa:isObservedBy ;
+                                          owl:allValuesFrom sosa:Sensor
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty [ owl:inverseOf sosa:observedProperty
+                                                         ] ;
+                                          owl:allValuesFrom sosa:Observation
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty [ owl:inverseOf ssn:isProxyFor
+                                                         ] ;
+                                          owl:allValuesFrom ssn:Stimulus
+                                        ] ;
+                        rdfs:comment "An observable quality (property, characteristic) of a FeatureOfInterest."@en ;
+                        rdfs:isDefinedBy sosa: ;
+                        rdfs:label "Observable Property"@en ;
+                        <http://www.w3.org/2004/02/skos/core#definition> "An observable quality (property, characteristic) of a FeatureOfInterest."@en ;
+                        <http://www.w3.org/2004/02/skos/core#example> "The height of a tree, the depth of a water body, or the temperature of a surface are examples of observable properties, while the value of a classic car is not (directly) observable but asserted."@en .
+
+
+###  http://www.w3.org/ns/sosa/Observation
+sosa:Observation rdf:type owl:Class ;
+                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:hasFeatureOfInterest ;
+                                   owl:allValuesFrom sosa:FeatureOfInterest
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:hasResult ;
+                                   owl:allValuesFrom sosa:Result
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:madeBySensor ;
+                                   owl:allValuesFrom sosa:Sensor
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:observedProperty ;
+                                   owl:allValuesFrom sosa:ObservableProperty
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:usedProcedure ;
+                                   owl:allValuesFrom sosa:Procedure
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty ssn:wasOriginatedBy ;
+                                   owl:allValuesFrom ssn:Stimulus
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:hasResult ;
+                                   owl:minCardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:hasFeatureOfInterest ;
+                                   owl:cardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:madeBySensor ;
+                                   owl:cardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:observedProperty ;
+                                   owl:cardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:phenomenonTime ;
+                                   owl:cardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty ssn:wasOriginatedBy ;
+                                   owl:cardinality "1"^^xsd:nonNegativeInteger
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty sosa:resultTime ;
+                                   owl:cardinality "1"^^xsd:nonNegativeInteger
+                                 ] ;
+                 rdfs:comment "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest. Links to a Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with."@en ;
+                 rdfs:isDefinedBy sosa: ;
+                 rdfs:label "Observation"@en ;
+                 <http://www.w3.org/2004/02/skos/core#definition> "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest. Links to a Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with."@en ;
+                 <http://www.w3.org/2004/02/skos/core#example> "The activity of estimating the intensity of an Earthquake using the Mercalli intensity scale is an Observation as is measuring the moment magnitude, i.e., the energy released by said earthquake."@en .
+
+
+###  http://www.w3.org/ns/sosa/Platform
+sosa:Platform rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:hosts ;
+                                owl:allValuesFrom ssn:System
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty ssn:inDeployment ;
+                                owl:allValuesFrom ssn:Deployment
+                              ] ;
+              rdfs:comment "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms."@en ;
+              rdfs:isDefinedBy sosa: ;
+              rdfs:label "Platform"@en ;
+              <http://www.w3.org/2004/02/skos/core#definition> "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms."@en ;
+              <http://www.w3.org/2004/02/skos/core#example> "A post, buoy, vehicle, ship, aircraft, satellite, cell-phone, human or animal may act as platforms for (technical or biological) sensors or actuators."@en .
+
+
+###  http://www.w3.org/ns/sosa/Procedure
+sosa:Procedure rdf:type owl:Class ;
+               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty ssn:hasInput ;
+                                 owl:allValuesFrom ssn:Input
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty ssn:hasOutput ;
+                                 owl:allValuesFrom ssn:Output
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty ssn:implementedBy ;
+                                 owl:allValuesFrom ssn:System
+                               ] ;
+               rdfs:comment "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many Observations, Samplings, or Actuations. It explains the steps to be carried out to arrive at reproducible results."@en ;
+               rdfs:isDefinedBy sosa: ;
+               rdfs:label "Procedure"@en ;
+               <http://www.w3.org/2004/02/skos/core#definition> "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many Observations, Samplings, or Actuations. It explains the steps to be carried out to arrive at reproducible results."@en ;
+               <http://www.w3.org/2004/02/skos/core#example> "The measured wind speed differs depending on the height of the sensor above the surface, e.g., due to friction. Consequently, procedures for measuring wind speed define a standard height for anemometers above ground, typically 10m for meteorological measures and 2m in Agrometeorology. This definition of height, sensor placement, and so forth are defined by the Procedure."@en ;
+               <http://www.w3.org/2004/02/skos/core#note> "Many observations may be created via the same Procedure, the same way as many tables are assembled using the same instructions (as information objects, not their concrete realization)."@en .
+
+
+###  http://www.w3.org/ns/sosa/Result
+sosa:Result rdf:type owl:Class ;
+            rdfs:subClassOf [ rdf:type owl:Restriction ;
+                              owl:onProperty sosa:isResultOf ;
+                              owl:minCardinality "1"^^xsd:nonNegativeInteger
+                            ] ;
+            rdfs:comment "The Result of an Observation, Actuation, or act of Sampling. To store an observation's simple result value one can use the hasSimpleResult property."@en ;
+            rdfs:isDefinedBy sosa: ;
+            rdfs:label "Result"@en ;
+            <http://www.w3.org/2004/02/skos/core#definition> "The Result of an Observation, Actuation, or act of Sampling. To store an observation's simple result value one can use the hasSimpleResult property."@en ;
+            <http://www.w3.org/2004/02/skos/core#example> "The value 20 as the height of a certain tree together with the unit, e.g., Meter."@en .
+
+
+###  http://www.w3.org/ns/sosa/Sample
+sosa:Sample rdf:type owl:Class ;
+            rdfs:subClassOf sosa:FeatureOfInterest ,
+                            sosa:Result ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty sosa:isResultOf ;
+                              owl:allValuesFrom sosa:Sampling
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty sosa:isSampleOf ;
+                              owl:allValuesFrom sosa:FeatureOfInterest
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty sosa:isResultOf ;
+                              owl:minCardinality "1"^^xsd:nonNegativeInteger
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty sosa:isSampleOf ;
+                              owl:minCardinality "1"^^xsd:nonNegativeInteger
+                            ] ;
+            rdfs:comment "A Sample is the result from an act of Sampling."@en ,
+                         "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made."@en ,
+                         "Physical samples are sometimes known as 'specimens'."@en ,
+                         """Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.
+
+A Sample is intended to sample some FatureOfInterest, so there is an expectation of at least one isSampleOf property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features."""@en ;
+            rdfs:isDefinedBy sosa: ;
+            rdfs:label "Sample"@en ;
+            <http://www.w3.org/2004/02/skos/core#definition> "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made."@en ;
+            <http://www.w3.org/2004/02/skos/core#example> "A 'station' is essentially an identifiable locality where a sensor system or Procedure may be deployed and an observation made. In the context of the observation model, it connotes the 'world in the vicinity of the station', so the observed properties relate to the physical medium at the station, and not to any physical artifact such as a mooring, buoy, benchmark, monument, well, etc."@en ,
+                                                          "A statistical sample is often designed to be characteristic of an entire population, so that observations can be made regarding the sample that provide a good estimate of the properties of the population."@en ;
+            <http://www.w3.org/2004/02/skos/core#note> "A transient sample, such as a ships-track or flight-line, might be identified and described, but is unlikely to be revisited exactly."@en .
+
+
+###  http://www.w3.org/ns/sosa/Sampler
+sosa:Sampler rdf:type owl:Class ;
+             rdfs:subClassOf ssn:System ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty sosa:madeSampling ;
+                               owl:allValuesFrom sosa:Sampling
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty ssn:implements ;
+                               owl:minCardinality "1"^^xsd:nonNegativeInteger
+                             ] ;
+             rdfs:comment "A device that is used by, or implements, a Sampling Procedure to create or transform one or more samples."@en ;
+             rdfs:isDefinedBy sosa: ;
+             rdfs:label "Sampler"@en ;
+             <http://www.w3.org/2004/02/skos/core#definition> "A device that is used by, or implements, a Sampling Procedure to create or transform one or more samples."@en ;
+             <http://www.w3.org/2004/02/skos/core#example> "A ball mill, diamond drill, hammer, hypodermic syringe and needle, image Sensor or a soil auger can all act as sampling devices (i.e., be Samplers). However, sometimes the distinction between the Sampler and the Sensor is not evident, as they are packaged as a unit. A Sampler need not be a physical device."@en .
+
+
+###  http://www.w3.org/ns/sosa/Sampling
+sosa:Sampling rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:hasFeatureOfInterest ;
+                                owl:allValuesFrom sosa:FeatureOfInterest
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:hasResult ;
+                                owl:allValuesFrom sosa:Sample
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:madeBySampler ;
+                                owl:allValuesFrom sosa:Sampler
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:usedProcedure ;
+                                owl:allValuesFrom sosa:Procedure
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:hasResult ;
+                                owl:minCardinality "1"^^xsd:nonNegativeInteger
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:hasFeatureOfInterest ;
+                                owl:cardinality "1"^^xsd:nonNegativeInteger
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:madeBySampler ;
+                                owl:cardinality "1"^^xsd:nonNegativeInteger
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty sosa:resultTime ;
+                                owl:cardinality "1"^^xsd:nonNegativeInteger
+                              ] ;
+              rdfs:comment "An act of Sampling carries out a sampling Procedure to create or transform one or more samples."@en ;
+              rdfs:isDefinedBy sosa: ;
+              rdfs:label "Sampling"@en ;
+              <http://www.w3.org/2004/02/skos/core#definition> "An act of Sampling carries out a sampling Procedure to create or transform one or more samples."@en ;
+              <http://www.w3.org/2004/02/skos/core#example> "Crushing a rock sample in a ball mill."@en ,
+                                                            "Digging a pit through a soil sequence."@en ,
+                                                            "Dividing a field site into quadrants."@en ,
+                                                            "Drawing blood from a patient."@en ,
+                                                            "Drilling an observation well."@en ,
+                                                            "Establishing a station for environmental monitoring."@en ,
+                                                            "Registering an image of the landscape."@en ,
+                                                            "Selecting a subset of a population."@en ,
+                                                            "Sieving a powder to separate the subset finer than 100-mesh."@en ,
+                                                            "Splitting a piece of drill-core to create two new samples."@en ,
+                                                            "Taking a diamond-drill core from a rock outcrop."@en .
+
+
+###  http://www.w3.org/ns/sosa/Sensor
+sosa:Sensor rdf:type owl:Class ;
+            rdfs:subClassOf ssn:System ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty sosa:madeObservation ;
+                              owl:allValuesFrom sosa:Observation
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty sosa:observes ;
+                              owl:allValuesFrom sosa:ObservableProperty
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty ssn:detects ;
+                              owl:allValuesFrom ssn:Stimulus
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty ssn:implements ;
+                              owl:minCardinality "1"^^xsd:nonNegativeInteger
+                            ] ;
+            rdfs:comment "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms."@en ;
+            rdfs:isDefinedBy sosa: ;
+            rdfs:label "Sensor"@en ;
+            <http://www.w3.org/2004/02/skos/core#definition> "Device, agent (including humans), or software (simulation) involved in, or implementing, a (Sensing) Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms."@en ,
+                                                             "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms."@en ;
+            <http://www.w3.org/2004/02/skos/core#example> "Accelerometers, gyroscopes, barometers, magnetometers, and so forth are Sensors that are typically mounted on a modern smart phone (which acts as Platform). Other examples of sensors include the human eyes."@en .
+
+
+###  http://www.w3.org/ns/ssn/Deployment
+ssn:Deployment rdf:type owl:Class ;
+               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty ssn:deployedOnPlatform ;
+                                 owl:allValuesFrom sosa:Platform
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty ssn:deployedSystem ;
+                                 owl:allValuesFrom ssn:System
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty ssn:forProperty ;
+                                 owl:allValuesFrom ssn:Property
+                               ] ;
+               rdfs:comment "Describes the Deployment of one or more Systems for a particular purpose. Deployment may be done on a Platform."@en ;
+               rdfs:isDefinedBy ssn: ;
+               rdfs:label "Deployment"@en ;
+               <http://www.w3.org/2004/02/skos/core#definition> "Describes the Deployment of one or more Systems for a particular purpose. Deployment may be done on a Platform."@en ;
+               <http://www.w3.org/2004/02/skos/core#example> "For example, a temperature Sensor deployed on a wall, or a whole network of Sensors deployed for an Observation campaign."@en .
+
+
+###  http://www.w3.org/ns/ssn/Input
+ssn:Input rdf:type owl:Class ;
+          rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty [ owl:inverseOf ssn:hasInput
+                                           ] ;
+                            owl:allValuesFrom sosa:Procedure
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty [ owl:inverseOf ssn:hasInput
+                                           ] ;
+                            owl:minCardinality "1"^^xsd:nonNegativeInteger
+                          ] ;
+          rdfs:comment "Any information that is provided to a Procedure for its use."@en ;
+          rdfs:isDefinedBy ssn: ;
+          rdfs:label "Input"@en ;
+          <http://www.w3.org/2004/02/skos/core#definition> "Any information that is provided to a Procedure for its use."@en .
+
+
+###  http://www.w3.org/ns/ssn/Output
+ssn:Output rdf:type owl:Class ;
+           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                             owl:onProperty [ owl:inverseOf ssn:hasOutput
+                                            ] ;
+                             owl:allValuesFrom sosa:Procedure
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty [ owl:inverseOf ssn:hasOutput
+                                            ] ;
+                             owl:minCardinality "1"^^xsd:nonNegativeInteger
+                           ] ;
+           rdfs:comment "Any information that is reported from a Procedure."@en ;
+           rdfs:isDefinedBy ssn: ;
+           rdfs:label "Output"@en ;
+           <http://www.w3.org/2004/02/skos/core#definition> "Any information that is reported from a Procedure."@en .
+
+
+###  http://www.w3.org/ns/ssn/Property
+ssn:Property rdf:type owl:Class ;
+             rdfs:subClassOf owlc:ContextDimension ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty ssn:isPropertyOf ;
+                               owl:allValuesFrom sosa:FeatureOfInterest
+                             ] ;
+             rdfs:comment "A quality of an entity. An aspect of an entity that is intrinsic to and cannot exist without the entity."@en ;
+             rdfs:isDefinedBy ssn: ;
+             rdfs:label "Property"@en ;
+             <http://www.w3.org/2004/02/skos/core#definition> "A quality of an entity. An aspect of an entity that is intrinsic to and cannot exist without the entity."@en .
+
+
+###  http://www.w3.org/ns/ssn/Stimulus
+ssn:Stimulus rdf:type owl:Class ;
+             rdfs:subClassOf [ rdf:type owl:Restriction ;
+                               owl:onProperty ssn:isProxyFor ;
+                               owl:allValuesFrom sosa:ObservableProperty
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty [ owl:inverseOf ssn:detects
+                                              ] ;
+                               owl:allValuesFrom sosa:Sensor
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty [ owl:inverseOf ssn:wasOriginatedBy
+                                              ] ;
+                               owl:allValuesFrom sosa:Observation
+                             ] ;
+             rdfs:comment "An event in the real world that 'triggers' the Sensor. The properties associated to the Stimulus may be different to the eventual observed ObservableProperty. It is the event, not the object, that triggers the Sensor."@en ;
+             rdfs:isDefinedBy ssn: ;
+             rdfs:label "Stimulus"@en ;
+             <http://www.w3.org/2004/02/skos/core#definition> "An event in the real world that 'triggers' the Sensor. The properties associated to the Stimulus may be different to the eventual observed ObservableProperty. It is the event, not the object, that triggers the Sensor."@en .
+
+
+###  http://www.w3.org/ns/ssn/System
+ssn:System rdf:type owl:Class ;
+           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                             owl:onProperty sosa:isHostedBy ;
+                             owl:allValuesFrom sosa:Platform
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty ssn:hasDeployment ;
+                             owl:allValuesFrom ssn:Deployment
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty ssn:hasSubSystem ;
+                             owl:allValuesFrom ssn:System
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty ssn:implements ;
+                             owl:allValuesFrom sosa:Procedure
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty [ owl:inverseOf ssn:hasSubSystem
+                                            ] ;
+                             owl:allValuesFrom ssn:System
+                           ] ;
+           rdfs:comment "System is a unit of abstraction for pieces of infrastructure that implement Procedures. A System may have components, its subsystems, which are other systems."@en ,
+                        "System is a unit of abstraction for pieces of infrastructure that implements Procedures. A System may have components, its subsystems, which are other systems."@en ;
+           rdfs:isDefinedBy ssn: ;
+           rdfs:label "System"@en ;
+           <http://www.w3.org/2004/02/skos/core#definition> "System is a unit of abstraction for pieces of infrastructure that implement Procedures. A System may have components, its subsystems, which are other systems."@en .
+
+
+###  http://xmlns.com/foaf/0.1/Agent
+<http://xmlns.com/foaf/0.1/Agent> rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.museum.gauss.it/DoorRoomEntrance
+gmus:DoorRoomEntrance rdf:type owl:NamedIndividual ,
+                               lsa:SoftwareProcedure ,
+                               sosa:Procedure ;
+                      lsa:implementedBy gmus:InfraredPresenceSensor ;
+                      ssn:implementedBy gmus:InfraredPresenceSensor .
+
+
+###  http://example.museum.gauss.it/InfraredPresenceSensor
+gmus:InfraredPresenceSensor rdf:type owl:NamedIndividual ,
+                                     lsa:LogicalSensor ,
+                                     sosa:Sensor ,
+                                     ssn:System ;
+                            ssn:implements gmus:DoorRoomEntrance .
+
+
+###  http://example.museum.gauss.it/PeopleInRoomProperty
+gmus:PeopleInRoomProperty rdf:type owl:NamedIndividual ,
+                                   sosa:ObservableProperty ,
+                                   ssn:Property .
+
+
+###  http://example.museum.gauss.it/PresenceInRoomProperty
+gmus:PresenceInRoomProperty rdf:type owl:NamedIndividual ,
+                                     sosa:ObservableProperty ,
+                                     ssn:Property .
+
+
+###  http://example.museum.gauss.it/PresenceInSensorZoneProperty
+gmus:PresenceInSensorZoneProperty rdf:type owl:NamedIndividual ,
+                                           sosa:ObservableProperty ,
+                                           ssn:Property .
+
+
+###  http://example.museum.gauss.it/ThermalStimulus
+gmus:ThermalStimulus rdf:type owl:NamedIndividual ,
+                              ssn:Stimulus ;
+                     ssn:isProxyFor gmus:PresenceInSensorZoneProperty .
+
+
+###  http://example.museum.gauss.it/door1
+gmus:door1 rdf:type owl:NamedIndividual ,
+                    sosa:FeatureOfInterest ,
+                    sosa:Platform .
+
+
+###  http://example.museum.gauss.it/ir1
+gmus:ir1 rdf:type owl:NamedIndividual ,
+                  sosa:Sensor ,
+                  ssn:System ;
+         sosa:isHostedBy gmus:door1 ;
+         lsa:hasPriority 3 ;
+         sosa:observes <http://example.museum.gauss.it/presence/room1/ir1/zoneDoorInside> .
+
+
+###  http://example.museum.gauss.it/ir2
+gmus:ir2 rdf:type owl:NamedIndividual ,
+                  sosa:Sensor ,
+                  ssn:System ;
+         sosa:isHostedBy gmus:door1 ;
+         lsa:hasPriority 3 ;
+         sosa:observes <http://example.museum.gauss.it/presence/room1/ir2/zoneDoorOutside> .
+
+
+###  http://example.museum.gauss.it/ir3
+gmus:ir3 rdf:type owl:NamedIndividual ,
+                  sosa:Sensor ,
+                  ssn:System ;
+         lsa:hasPriority 4 ;
+         sosa:observes <http://example.museum.gauss.it/presence/room1/ir1/zoneDoorInside> .
+
+
+###  http://example.museum.gauss.it/ir4
+gmus:ir4 rdf:type owl:NamedIndividual ,
+                  sosa:Sensor ,
+                  ssn:System ;
+         lsa:hasPriority 4 ;
+         sosa:observes <http://example.museum.gauss.it/presence/room1/ir2/zoneDoorOutside> .
+
+
+###  http://example.museum.gauss.it/ls1
+gmus:ls1 rdf:type owl:NamedIndividual ,
+                  lsa:LogicalSensor ,
+                  sosa:Sensor ,
+                  ssn:System ;
+         lsa:hasState <http://example.museum.gauss.it/bstate/room1/ls1/1> ,
+                      <http://example.museum.gauss.it/state/room1/ls1> ,
+                      <http://example.museum.gauss.it/wstate/room1/ls1/1> ;
+         sosa:isHostedBy gmus:triplestore ;
+         ssn:hasSubSystem gmus:ir1 ,
+                          gmus:ir2 ;
+         ssn:implements <http://example.museum.gauss.it/entrance/door1/room1> ;
+         lsa:hasPriority 2 ;
+         lsa:implements <http://example.museum.gauss.it/entrance/door1/room1> ;
+         sosa:observes <http://example.museum.gauss.it/people/room1> ,
+                       <http://example.museum.gauss.it/presence/room1> .
+
+
+###  http://example.museum.gauss.it/m1
+gmus:m1 rdf:type owl:NamedIndividual ,
+                 sosa:Sensor ,
+                 ssn:System ;
+        lsa:hasState <http://example.museum.gauss.it/bstate/room1/m1/1> ,
+                     <http://example.museum.gauss.it/state/room1/m1> ,
+                     <http://example.museum.gauss.it/wstate/room1/m1/1> ;
+        lsa:hasPriority 1 ;
+        sosa:observes <http://example.museum.gauss.it/presence/room1> .
+
+
+###  http://example.museum.gauss.it/restQuery
+gmus:restQuery rdf:type owl:NamedIndividual ,
+                        lsa:ActionableType ,
+                        lsa:SoftwareProcedureExecutor ,
+                        lsa:Type ;
+               lsa:isTypeOf <http://example.museum.gauss.it/doorRoomEntrance/behavior/2/actionable> .
+
+
+###  http://example.museum.gauss.it/restRequestEngine
+gmus:restRequestEngine rdf:type owl:NamedIndividual ,
+                                lsa:RequestEngine ,
+                                lsa:SoftwareProcedureExecutor .
+
+
+###  http://example.museum.gauss.it/room1
+gmus:room1 rdf:type owl:NamedIndividual ,
+                    sosa:FeatureOfInterest ;
+           sosa:isFeatureOfInterestOf <http://example.museum.gauss.it/people/room1> .
+
+
+###  http://example.museum.gauss.it/sparqlQuery
+gmus:sparqlQuery rdf:type owl:NamedIndividual ,
+                          lsa:ActionableType ,
+                          lsa:Type ;
+                 lsa:isExecutableBy gmus:sparqlQueryEngine .
+
+
+###  http://example.museum.gauss.it/sparqlQueryEngine
+gmus:sparqlQueryEngine rdf:type owl:NamedIndividual ,
+                                lsa:QueryEngine ,
+                                lsa:SoftwareProcedureExecutor ;
+                       lsa:isAbleToExecute gmus:sparqlQuery .
+
+
+###  http://example.museum.gauss.it/spinRule
+gmus:spinRule rdf:type owl:NamedIndividual ,
+                       lsa:ActionableType ,
+                       lsa:Type .
+
+
+###  http://example.museum.gauss.it/triplestore
+gmus:triplestore rdf:type owl:NamedIndividual ,
+                          sosa:Platform ;
+                 sosa:hosts gmus:ls1 .
+
+
+###  http://example.museum.gauss.it/bstate/room1/ls1/1
+<http://example.museum.gauss.it/bstate/room1/ls1/1> rdf:type owl:NamedIndividual ,
+                                                             lsa:BindingState ,
+                                                             lsa:State ,
+                                                             lsa:TemporalEntity ,
+                                                             owlc:ContextDimension ,
+                                                             sosa:ActuatableProperty ,
+                                                             sosa:ObservableProperty ,
+                                                             ssn:Property ;
+                                                    lsa:hasTimespan <http://example.museum.gauss.it/timespan/bstate/ls1/1/t> ;
+                                                    lsa:hasType lsa:inactive ;
+                                                    lsa:isStateOf gmus:ls1 .
+
+
+###  http://example.museum.gauss.it/bstate/room1/m1/1
+<http://example.museum.gauss.it/bstate/room1/m1/1> rdf:type owl:NamedIndividual ,
+                                                            lsa:BindingState ,
+                                                            lsa:State ,
+                                                            lsa:TemporalEntity ,
+                                                            owlc:ContextDimension ,
+                                                            sosa:ActuatableProperty ,
+                                                            sosa:ObservableProperty ,
+                                                            ssn:Property ;
+                                                   lsa:hasTimespan <http://example.museum.gauss.it/timespan/bstate/m1/1/t> ;
+                                                   lsa:hasType lsa:attached ;
+                                                   lsa:isStateOf gmus:m1 .
+
+
+###  http://example.museum.gauss.it/doorRoomEntrance/behavior
+<http://example.museum.gauss.it/doorRoomEntrance/behavior> rdf:type owl:NamedIndividual ,
+                                                                    lsa:ActionableBehavior ;
+                                                           lsa:hasActionSpecification <http://example.museum.gauss.it/doorRoomEntrance/behavior/1/actionable> ,
+                                                                                      <http://example.museum.gauss.it/doorRoomEntrance/behavior/2/actionable> ;
+                                                           lsa:isBehaviorOf <http://example.museum.gauss.it/entrance/door1/room1> ;
+                                                           lsa:hasControlSpecification <http://example.museum.gauss.it/doorRoomEntrance/behavior/1> .
+
+
+###  http://example.museum.gauss.it/doorRoomEntrance/behavior/1
+<http://example.museum.gauss.it/doorRoomEntrance/behavior/1> rdf:type owl:NamedIndividual ,
+                                                                      lsa:ControlStructure ,
+                                                                      lsa:List ;
+                                                             lsa:first <http://example.museum.gauss.it/doorRoomEntrance/behavior/1/actionable> ;
+                                                             lsa:rest <http://example.museum.gauss.it/doorRoomEntrance/behavior/2> .
+
+
+###  http://example.museum.gauss.it/doorRoomEntrance/behavior/1/actionable
+<http://example.museum.gauss.it/doorRoomEntrance/behavior/1/actionable> rdf:type owl:NamedIndividual ,
+                                                                                 lsa:Actionable ;
+                                                                        lsa:hasType gmus:sparqlQuery ;
+                                                                        lsa:isActionSpecificationOf <http://example.museum.gauss.it/doorRoomEntrance/behavior> ;
+                                                                        lsa:hasCode "CONSTRUCT ?act ... WHERE ..." .
+
+
+###  http://example.museum.gauss.it/doorRoomEntrance/behavior/2
+<http://example.museum.gauss.it/doorRoomEntrance/behavior/2> rdf:type owl:NamedIndividual ,
+                                                                      lsa:ControlStructure ,
+                                                                      lsa:List ;
+                                                             lsa:first <http://example.museum.gauss.it/doorRoomEntrance/behavior/2/actionable> ;
+                                                             lsa:rest lsa:nil .
+
+
+###  http://example.museum.gauss.it/doorRoomEntrance/behavior/2/actionable
+<http://example.museum.gauss.it/doorRoomEntrance/behavior/2/actionable> rdf:type owl:NamedIndividual ,
+                                                                                 lsa:Actionable ;
+                                                                        lsa:hasType gmus:restQuery ;
+                                                                        lsa:isActionSpecificationOf <http://example.museum.gauss.it/doorRoomEntrance/behavior> ;
+                                                                        lsa:hasURL "http://www.gauss.it/museum/actuator1" ;
+                                                                        lsa:hasMethod "GET" .
+
+
+###  http://example.museum.gauss.it/entrance/door1/room1
+<http://example.museum.gauss.it/entrance/door1/room1> rdf:type owl:NamedIndividual ,
+                                                               gmus:DoorRoomEntrance ,
+                                                               lsa:SoftwareProcedure ;
+                                                      lsa:hasBehavior <http://example.museum.gauss.it/doorRoomEntrance/behavior> ;
+                                                      lsa:implementedBy gmus:ls1 ;
+                                                      ssn:implementedBy gmus:ls1 .
+
+
+###  http://example.museum.gauss.it/faultDetect/behavior
+<http://example.museum.gauss.it/faultDetect/behavior> rdf:type owl:NamedIndividual ,
+                                                               lsa:ActionableBehavior ;
+                                                      lsa:hasActionSpecification <http://example.museum.gauss.it/faultDetect/behavior/1/actionable> ;
+                                                      lsa:isBehaviorOf <http://example.museum.gauss.it/faultDetect/door1/room1> ;
+                                                      lsa:hasControlSpecification <http://example.museum.gauss.it/faultDetect/behavior/1> .
+
+
+###  http://example.museum.gauss.it/faultDetect/behavior/1
+<http://example.museum.gauss.it/faultDetect/behavior/1> rdf:type owl:NamedIndividual ,
+                                                                 lsa:ControlStructure ,
+                                                                 lsa:List ;
+                                                        lsa:first <http://example.museum.gauss.it/faultDetect/behavior/1/actionable> ;
+                                                        lsa:rest lsa:nil ;
+                                                        lsa:resr lsa:nil .
+
+
+###  http://example.museum.gauss.it/faultDetect/behavior/1/actionable
+<http://example.museum.gauss.it/faultDetect/behavior/1/actionable> rdf:type owl:NamedIndividual ,
+                                                                            lsa:Actionable ;
+                                                                   lsa:hasType gmus:sparqlQuery ;
+                                                                   lsa:isActionSpecificationOf <http://example.museum.gauss.it/faultDetect/behavior> ;
+                                                                   lsa:hasCode """ CONSTRUCT {
+  ?thisObservation rdf:type sosa:Observation;
+  sosa:hasFeatureOfInterest <http://example.museum.gauss.it/m1>;
+  sosa:madeBySensor <http://example.museum.gauss.it/faultDetector/room1>;
+  sosa:observedProperty <http://example.museum.gauss.it/state/room1/m1>;
+  sosa:hasSimpleResult 0;
+  sosa:hasResultTime ?now.} 
+WHERE { 
+  BIND(NOW() AS ?now).
+  BIND(UUID() AS ?thisObservation).
+}""" .
+
+
+###  http://example.museum.gauss.it/faultDetect/door1/room1
+<http://example.museum.gauss.it/faultDetect/door1/room1> rdf:type owl:NamedIndividual ,
+                                                                  lsa:SoftwareProcedure ;
+                                                         lsa:hasBehavior <http://example.museum.gauss.it/faultDetect/behavior> .
+
+
+###  http://example.museum.gauss.it/faultDetector/room1
+<http://example.museum.gauss.it/faultDetector/room1> rdf:type owl:NamedIndividual ,
+                                                              lsa:FaultDetector ,
+                                                              sosa:Sensor ,
+                                                              ssn:System .
+
+
+###  http://example.museum.gauss.it/people/room1
+<http://example.museum.gauss.it/people/room1> rdf:type owl:NamedIndividual ,
+                                                       gmus:PeopleInRoomProperty ;
+                                              sosa:hasFeatureOfInterest gmus:room1 .
+
+
+###  http://example.museum.gauss.it/presence/room1
+<http://example.museum.gauss.it/presence/room1> rdf:type owl:NamedIndividual ,
+                                                         gmus:PeopleInRoomProperty ,
+                                                         sosa:ObservableProperty ,
+                                                         ssn:Property .
+
+
+###  http://example.museum.gauss.it/presence/room1/ir1/zoneDoorInside
+<http://example.museum.gauss.it/presence/room1/ir1/zoneDoorInside> rdf:type owl:NamedIndividual ,
+                                                                            gmus:PresenceInSensorZoneProperty .
+
+
+###  http://example.museum.gauss.it/presence/room1/ir2/zoneDoorOutside
+<http://example.museum.gauss.it/presence/room1/ir2/zoneDoorOutside> rdf:type owl:NamedIndividual ,
+                                                                             gmus:PresenceInSensorZoneProperty .
+
+
+###  http://example.museum.gauss.it/presence/sensorReconfigurator/room1
+<http://example.museum.gauss.it/presence/sensorReconfigurator/room1> rdf:type owl:NamedIndividual ,
+                                                                              gmus:SensorReconfigurator ,
+                                                                              lsa:LogicalActuator ,
+                                                                              sosa:Actuator ;
+                                                                     ssn:implements <http://example.museum.gauss.it/sensorReconfiguration/presence/room1> ;
+                                                                     lsa:implements <http://example.museum.gauss.it/sensorReconfiguration/presence/room1> ;
+                                                                     rdfs:comment "Logical Actuator for Fault Management" .
+
+
+###  http://example.museum.gauss.it/sensorReconfiguration/behavior/1
+<http://example.museum.gauss.it/sensorReconfiguration/behavior/1> rdf:type owl:NamedIndividual ,
+                                                                           lsa:ControlStructure ,
+                                                                           lsa:List ;
+                                                                  lsa:first <http://example.museum.gauss.it/sensorReconfigurator/behavior/1/actionable> ;
+                                                                  lsa:rest lsa:nil .
+
+
+###  http://example.museum.gauss.it/sensorReconfiguration/presence/room1
+<http://example.museum.gauss.it/sensorReconfiguration/presence/room1> rdf:type owl:NamedIndividual ,
+                                                                               gmus:SensorReconfiguration ,
+                                                                               lsa:SoftwareProcedure ,
+                                                                               sosa:Procedure ;
+                                                                      lsa:hasBehavior <http://example.museum.gauss.it/sensorReconfigurator/behavior> ;
+                                                                      lsa:implementedBy <http://example.museum.gauss.it/presence/sensorReconfigurator/room1> ;
+                                                                      ssn:hasInput <http://example.museum.gauss.it/state/room1/m1> ;
+                                                                      ssn:implementedBy <http://example.museum.gauss.it/presence/sensorReconfigurator/room1> .
+
+
+###  http://example.museum.gauss.it/sensorReconfigurator/behavior
+<http://example.museum.gauss.it/sensorReconfigurator/behavior> rdf:type owl:NamedIndividual ,
+                                                                        lsa:ActionableBehavior ;
+                                                               lsa:hasActionSpecification <http://example.museum.gauss.it/sensorReconfigurator/behavior/1/actionable> ;
+                                                               lsa:isBehaviorOf <http://example.museum.gauss.it/sensorReconfiguration/presence/room1> ;
+                                                               lsa:hasControlSpecification <http://example.museum.gauss.it/sensorReconfiguration/behavior/1> .
+
+
+###  http://example.museum.gauss.it/sensorReconfigurator/behavior/1/actionable
+<http://example.museum.gauss.it/sensorReconfigurator/behavior/1/actionable> rdf:type owl:NamedIndividual ,
+                                                                                     lsa:Actionable ;
+                                                                            lsa:hasType gmus:sparqlQuery ;
+                                                                            lsa:isActionSpecificationOf <http://example.museum.gauss.it/sensorReconfigurator/behavior> ;
+                                                                            lsa:hasCode """CONSTRUCT {
+
+gmus:iriSoftPexe 								a lsa:SoftwareProcedureExecution;
+												ssn:hasOutput <http://example.museum.gauss.it/detaching/1>;
+												ssn:hasOutput <http://example.museum.gauss.it/attaching/1>;
+												ssn:hasOutput <http://example.museum.gauss.it/working/1>;
+												sosa:usedProcedure ?thisSoftwareP;
+												lsa:madeBy gmus:sparqlQueryEngine.
+						
+gmus:sparqlQueryEngine 							lsa:executes <http://example.museum.gauss.it/sensorReconfiguration/presence/room1>.
+						
+						
+<http://example.museum.gauss.it/detaching/1> 	a sosa:Actuation;
+												sosa:hasResult <http://example.museum.gauss.it/bstate/m1/2>;
+												sosa:hasResult ?bstate.
+?btimespan     									lsa:endIsQualifiedBy ?obsTime.
+												
+<http://example.museum.gauss.it/state/room1/m1> lsa:consistsOf <http://example.museum.gauss.it/bstate/m1/2>.
+?sensor											lsa:hasState  <http://example.museum.gauss.it/bstate/m1/2>.
+
+<http://example.museum.gauss.it/bstate/m1/2>  	a lsa:BindingState;
+												lsa:hasType lsa:detached;
+												lsa:hasTimespan <http://example.museum.gauss.it/timespan/bstate/m1/2>.
+																			
+<http://example.museum.gauss.it/timespan/bstate/m1/2> 	a lsa:Timespan;
+														lsa:beginningIsQualifiedBy ?obsTime.
+
+<http://example.museum.gauss.it/attaching/1>  	a sosa:Actuation;
+												sosa:hasResult <http://example.museum.gauss.it/bstate/ls1/2>;
+												sosa:hasResult ?backupState.
+						?backupSensorTimespan   lsa:endIsQualifiedBy ?obsTime.
+						
+<http://example.museum.gauss.it/bstate/ls1/2>  	a lsa:BindingState;
+												lsa:hasTimespan <http://example.museum.gauss.it/timespan/bstate/ls1/2>;
+												lsa:hasType lsa:attached.
+												
+<http://example.museum.gauss.it/timespan/bstate/ls1/2> 	a lsa:Timespan;
+														lsa:beginningIsQualifiedBy ?obsTime .
+												
+<http://example.museum.gauss.it/state/room1/ls1> lsa:consistsOf <http://example.museum.gauss.it/bstate/ls1/2>.
+?backupSensor			 						 lsa:hasState  <http://example.museum.gauss.it/bstate/ls1/2>.
+			
+													
+<http://example.museum.gauss.it/working/1> 		a sosa:Actuation;
+												sosa:hasResult <http://example.museum.gauss.it/wstate/room1/m1/2>;
+												sosa:hasResult ?wsN.
+?timespanWsN 									lsa:endIsQualifiedBy ?obsTime .	
+
+<http://example.museum.gauss.it/wstate/room1/m1/2> a lsa:WorkingState;
+													lsa:hasType lsa:faultyState;
+													lsa:hasTimespan <http://example.museum.gauss.it/timespan/wstate/room1/m1/2>.
+													
+<http://example.museum.gauss.it/timespan/wstate/room1/m1/2> lsa:beginningIsQualifiedBy ?obsTime .
+
+<http://example.museum.gauss.it/state/room1/m1> lsa:consistsOf <http://example.museum.gauss.it/timespan/wstate/room1/m1/2>.
+?sensor	lsa:hasState  <http://example.museum.gauss.it/timespan/wstate/room1/m1/2>.
+	
+} WHERE {
+
+  ?thisSoftwareP  	ssn:implementedBy <http://example.museum.gauss.it/presence/sensorReconfigurator/room1>.
+  ?obs   		  	a sosa:Observation;
+					sosa:madeBySensor <http://example.museum.gauss.it/faultDetector/room1>;
+					sosa:hasSimpleResult 0;
+					sosa:observedProperty ?workingState;
+					sosa:hasResultTime ?obsTime;
+					sosa:hasFeatureOfInterest ?sensor.
+  ?sensor 			lsa:hasState ?wsN.
+  ?wsN 				lsa:hasType 	lsa:normalState; 
+					lsa:hasTimespan ?timespanWsN.  
+  
+  ?sensor    		sosa:observes ?p;
+					lsa:hasState ?bstate.
+  ?bstate 			lsa:hasType lsa:attached;
+					lsa:hasTimespan ?btimespan.
+  ?backupSensor     sosa:observes  ?p;
+                    lsa:hasPriority \"2\"^^xsd:integer;
+                    lsa:hasState ?backupState.
+  ?backupState   	lsa:hasType lsa:inactive; 
+					lsa:hasTimespan ?backupTimespan.}""" .
+
+
+###  http://example.museum.gauss.it/state/room1/ls1
+<http://example.museum.gauss.it/state/room1/ls1> rdf:type owl:NamedIndividual ,
+                                                          lsa:State ,
+                                                          lsa:TemporalEntity ,
+                                                          lsa:WorkingState ,
+                                                          owlc:ContextDimension ,
+                                                          sosa:ObservableProperty ,
+                                                          ssn:Input ,
+                                                          ssn:Property ;
+                                                 lsa:consistsOf <http://example.museum.gauss.it/bstate/room1/ls1/1> ,
+                                                                <http://example.museum.gauss.it/wstate/room1/ls1/1> ;
+                                                 lsa:hasTimespan <http://example.museum.gauss.it/timespan/state/room1/ls1/t> ;
+                                                 lsa:isStateOf gmus:ls1 .
+
+
+###  http://example.museum.gauss.it/state/room1/m1
+<http://example.museum.gauss.it/state/room1/m1> rdf:type owl:NamedIndividual ,
+                                                         lsa:State ,
+                                                         lsa:TemporalEntity ,
+                                                         lsa:WorkingState ,
+                                                         owlc:ContextDimension ,
+                                                         sosa:ObservableProperty ,
+                                                         ssn:Input ,
+                                                         ssn:Property ;
+                                                lsa:consistsOf <http://example.museum.gauss.it/bstate/room1/m1/1> ,
+                                                               <http://example.museum.gauss.it/wstate/room1/m1/1> ;
+                                                lsa:hasTimespan <http://example.museum.gauss.it/timespan/state/room1/m1/t> ;
+                                                lsa:isStateOf gmus:m1 .
+
+
+###  http://example.museum.gauss.it/timespan/bstate/ls1/1/t
+<http://example.museum.gauss.it/timespan/bstate/ls1/1/t> rdf:type owl:NamedIndividual ,
+                                                                  lsa:Timespan ;
+                                                         lsa:isTimespanOf <http://example.museum.gauss.it/bstate/room1/ls1/1> ;
+                                                         lsa:beginningIsQualifiedBy "2019-03-02T13:31:59"^^xsd:dateTime .
+
+
+###  http://example.museum.gauss.it/timespan/bstate/m1/1/t
+<http://example.museum.gauss.it/timespan/bstate/m1/1/t> rdf:type owl:NamedIndividual ,
+                                                                 lsa:Timespan ;
+                                                        lsa:isTimespanOf <http://example.museum.gauss.it/bstate/room1/m1/1> ;
+                                                        lsa:beginningIsQualifiedBy "2019-03-02T13:31:59"^^xsd:dateTime .
+
+
+###  http://example.museum.gauss.it/timespan/state/room1/ls1/t
+<http://example.museum.gauss.it/timespan/state/room1/ls1/t> rdf:type owl:NamedIndividual ,
+                                                                     lsa:Timespan ;
+                                                            lsa:isTimespanOf <http://example.museum.gauss.it/state/room1/ls1> ;
+                                                            lsa:beginningIsQualifiedBy "2019-03-02T13:31:59"^^xsd:dateTime .
+
+
+###  http://example.museum.gauss.it/timespan/state/room1/m1/t
+<http://example.museum.gauss.it/timespan/state/room1/m1/t> rdf:type owl:NamedIndividual ,
+                                                                    lsa:Timespan ;
+                                                           lsa:isTimespanOf <http://example.museum.gauss.it/state/room1/m1> ;
+                                                           lsa:beginningIsQualifiedBy "2019-03-02T13:31:59"^^xsd:dateTime .
+
+
+###  http://example.museum.gauss.it/timespan/wstate/ls1/1/t
+<http://example.museum.gauss.it/timespan/wstate/ls1/1/t> rdf:type owl:NamedIndividual ,
+                                                                  lsa:Timespan ;
+                                                         lsa:isTimespanOf <http://example.museum.gauss.it/wstate/room1/ls1/1> ;
+                                                         lsa:beginningIsQualifiedBy "2019-03-02T13:31:59"^^xsd:dateTime .
+
+
+###  http://example.museum.gauss.it/timespan/wstate/m1/1/t
+<http://example.museum.gauss.it/timespan/wstate/m1/1/t> rdf:type owl:NamedIndividual ,
+                                                                 lsa:Timespan ;
+                                                        lsa:isTimespanOf <http://example.museum.gauss.it/wstate/room1/m1/1> ;
+                                                        lsa:beginningIsQualifiedBy "2019-03-02T13:31:59"^^xsd:dateTime .
+
+
+###  http://example.museum.gauss.it/wstate/room1/ls1/1
+<http://example.museum.gauss.it/wstate/room1/ls1/1> rdf:type owl:NamedIndividual ,
+                                                             lsa:State ;
+                                                    lsa:hasType lsa:normalState ;
+                                                    lsa:isStateOf gmus:ls1 .
+
+
+###  http://example.museum.gauss.it/wstate/room1/m1/1
+<http://example.museum.gauss.it/wstate/room1/m1/1> rdf:type owl:NamedIndividual ,
+                                                            lsa:State ,
+                                                            lsa:TemporalEntity ,
+                                                            lsa:WorkingState ,
+                                                            owlc:ContextDimension ,
+                                                            sosa:ObservableProperty ,
+                                                            ssn:Input ,
+                                                            ssn:Property ;
+                                                   lsa:hasTimespan <http://example.museum.gauss.it/timespan/wstate/m1/1/t> ;
+                                                   lsa:hasType lsa:normalState ;
+                                                   lsa:isStateOf gmus:m1 .
+
+
+###  http://www.gauss.it/lsa/FaultDetector
+lsa:FaultDetector rdf:type owl:NamedIndividual ,
+                           sosa:Sensor ,
+                           ssn:System .
+
+
+###  http://www.gauss.it/lsa/attached
+lsa:attached rdf:type owl:NamedIndividual ,
+                      lsa:BindingType ,
+                      lsa:Type ;
+             lsa:isTypeOf <http://example.museum.gauss.it/bstate/room1/m1/1> .
+
+
+###  http://www.gauss.it/lsa/detached
+lsa:detached rdf:type owl:NamedIndividual ,
+                      lsa:BindingType ,
+                      lsa:Type .
+
+
+###  http://www.gauss.it/lsa/faultyState
+lsa:faultyState rdf:type owl:NamedIndividual ,
+                         lsa:Type ,
+                         lsa:WorkingType .
+
+
+###  http://www.gauss.it/lsa/inactive
+lsa:inactive rdf:type owl:NamedIndividual ,
+                      lsa:BindingType ,
+                      lsa:Type ;
+             lsa:isTypeOf <http://example.museum.gauss.it/bstate/room1/ls1/1> .
+
+
+###  http://www.gauss.it/lsa/nil
+lsa:nil rdf:type owl:NamedIndividual .
+
+
+###  http://www.gauss.it/lsa/normalState
+lsa:normalState rdf:type owl:NamedIndividual ,
+                         lsa:Type ,
+                         lsa:WorkingType ;
+                lsa:isTypeOf <http://example.museum.gauss.it/wstate/room1/ls1/1> ,
+                             <http://example.museum.gauss.it/wstate/room1/m1/1> .
+
+
+###  http://www.w3.org/ns/sosa/
+sosa: rdf:type owl:NamedIndividual ,
+               <http://purl.org/vocommons/voaf#Vocabulary> .
+
+
+###  http://www.w3.org/ns/ssn/
+ssn: rdf:type owl:NamedIndividual ,
+              <http://purl.org/vocommons/voaf#Vocabulary> .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+lsa:faultDetector rdfs:comment """lsa:FaultDetector
+
+Subclass of:     sosa:Sensor
+
+Scope note:     Sensors defined for detecting sensors faulty states."""@en .
+
+
+lsa:hasControlSpecification rdfs:comment """lsa:hasControlSpecification
+
+Scope note: This property identifies the control structure of behaviors.
+
+Domain:        lsa:ActionableBehaior
+
+Range:          lsa:ControlStructure"""@en .
+
+
+sosa:observes rdfs:isDefinedBy sosa: ;
+              <http://schema.org/rangeIncludes> sosa:ObservableProperty ;
+              rdfs:label "observes"@en ;
+              rdfs:comment "Relation between a Sensor and an ObservableProperty that it is capable of sensing."@en ;
+              <http://www.w3.org/2004/02/skos/core#definition> "Relation between a Sensor and an ObservableProperty that it is capable of sensing."@en ;
+              <http://schema.org/domainIncludes> sosa:Sensor .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

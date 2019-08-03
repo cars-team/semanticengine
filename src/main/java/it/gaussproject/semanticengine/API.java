@@ -71,6 +71,19 @@ public class API {
     	return Response.ok(outputStream.toString(java.nio.charset.StandardCharsets.UTF_8)).build();
     }
     
+    /**
+     * POST endpoint to notify an observation.
+     * The request message is a JSON document with the following
+     * properties:
+     *   madeBySensor
+     *   observedProperty
+     *   hasFeatureOfInterest
+     *   resultTime?
+     *   hasSimpleResult?
+     * The output message is a text document containing the TTL of the produced observation.
+     * @param json
+     * @return
+     */
     @Path("observations")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
@@ -78,19 +91,21 @@ public class API {
     public Response createObservation(String json) {
 		JsonObject jsonObject = Json.createReader(new StringReader(json)).readObject();
 		String madeBySensor = jsonObject.getString("madeBySensor");
-		String resultTime = jsonObject.getString("resultTime");
+		String resultTime = jsonObject.getString("resultTime", null);
 		if(resultTime == null) {
 			resultTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(new Date());
 		}
 		String observedProperty = jsonObject.getString("observedProperty");
 		String hasFeatureOfInterest = jsonObject.getString("hasFeatureOfInterest");
+		String hasSimpleResult = jsonObject.getString("hasSimpleResult", null);
 
 		String ttl = MessageFormat.format(Engine.ttlPrefixes+"<observations/{2}#{1}> rdf:type sosa:Observation ;\n" + 
 				"  sosa:madeBySensor <{0}> ;\n" + 
 				"  sosa:resultTime \"{1}\"^^xsd:dateTime ;\n" + 
 				"  sosa:observedProperty <{2}> ;\n" + 
+				(hasSimpleResult == null ? "" : "  sosa:hasSimpleResult {4} ;\n") + 
 				"  sosa:hasFeatureOfInterest <{3}> .",
-				madeBySensor, resultTime, observedProperty, hasFeatureOfInterest);
+				madeBySensor, resultTime, observedProperty, hasFeatureOfInterest, hasSimpleResult);
 		LOG.info("API: creating observation: \n"+ttl);
 		Model newModel = ModelFactory.createDefaultModel().read(new StringReader(ttl), null, "TTL");
 		engine.runAddTransaction(newModel);
