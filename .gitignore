@@ -1,5 +1,8 @@
 *.class
 *.jar
 *.war
+*.log
 /target/
 /dependency-reduced-pom.xml
+/semanticengine.db/
+/scartchpad.txt

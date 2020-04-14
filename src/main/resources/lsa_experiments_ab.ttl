@@ -1,0 +1,368 @@
+@prefix:<http://www.gauss.it/lsaex/> .
+@prefix owl:<http://www.w3.org/2002/07/owl#> .
+@prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml:<http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix lsa:<http://www.gauss.it/lsa/> .
+@prefix lsaex:<http://experiments.gauss.it/lsa/> . 
+@prefix sosa: <http://www.w3.org/ns/sosa/> . 
+@prefix ssn: <http://www.w3.org/ns/ssn/> . 
+@base <http://experiments.gauss.it/lsa/> .
+
+###  http://www.w3.org/ns/sosa/
+<http://www.w3.org/ns/sosa/> rdf:type owl:NamedIndividual, <http://purl.org/vocommons/voaf#Vocabulary> .
+
+###  http://www.w3.org/ns/ssn/
+<http://www.w3.org/ns/ssn/> rdf:type owl:NamedIndividual, <http://purl.org/vocommons/voaf#Vocabulary> .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://experiments.gauss.it/lsa/HumidexActionableBehavior
+lsaex:HumidexActionableBehavior rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.gauss.it/lsa/ActionableBehavior> .
+
+
+###  http://experiments.gauss.it/lsa/HumidexLogicalSensor
+lsaex:HumidexLogicalSensor rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.gauss.it/lsa/LogicalSensor> .
+
+
+###  http://experiments.gauss.it/lsa/HumiditySensor
+lsaex:HumiditySensor rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.w3.org/ns/sosa/Sensor> .
+
+
+###  http://experiments.gauss.it/lsa/ObservableHumidex
+lsaex:ObservableHumidex rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.w3.org/ns/sosa/ObservableProperty> .
+
+
+###  http://experiments.gauss.it/lsa/ObservableHumidity
+lsaex:ObservableHumidity rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.w3.org/ns/sosa/ObservableProperty> .
+
+
+###  http://experiments.gauss.it/lsa/ObservableTemperature
+lsaex:ObservableTemperature rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.w3.org/ns/sosa/ObservableProperty> .
+
+
+###  http://experiments.gauss.it/lsa/TemperatureObservation
+lsaex:TemperatureObservation rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.w3.org/ns/sosa/Observation> .
+
+
+###  http://experiments.gauss.it/lsa/TemperatureSensor
+lsaex:TemperatureSensor rdf:type owl:Class ;
+	rdfs:subClassOf <http://www.w3.org/ns/sosa/Sensor> .
+
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://experiments.gauss.it/lsa/addTTLAction
+<http://experiments.gauss.it/lsa/addTTLAction> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionableType>, <http://www.gauss.it/lsa/Type> .
+
+###  http://experiments.gauss.it/lsa/living
+lsaex:living rdf:type owl:NamedIndividual, <http://www.w3.org/ns/sosa/FeatureOfInterest>, <http://www.w3.org/ns/sosa/Platform>;
+	<http://www.w3.org/ns/sosa/hosts> <http://experiments.gauss.it/lsa/livingHumiditySensor>, <http://experiments.gauss.it/lsa/livingTemperatureSensor>;
+	<http://www.w3.org/ns/sosa/isFeatureOfInterestOf> <http://experiments.gauss.it/lsa/livingTemperatureObservation#000000>;
+	<http://www.w3.org/ns/ssn/hasProperty> <http://experiments.gauss.it/lsa/livingHumidex>, <http://experiments.gauss.it/lsa/livingHumidity>, <http://experiments.gauss.it/lsa/livingTemperature> .
+
+###  http://experiments.gauss.it/lsa/livingHumidex
+lsaex:livingHumidex rdf:type owl:NamedIndividual, <http://experiments.gauss.it/lsa/ObservableHumidex>,
+	<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension>, <http://www.w3.org/ns/sosa/ObservableProperty>, <http://www.w3.org/ns/ssn/Property>;
+	<http://www.w3.org/ns/sosa/isObservedBy> <http://experiments.gauss.it/lsa/livingHumidexLogicalSensor>;
+	<http://www.w3.org/ns/ssn/isPropertyOf> <http://experiments.gauss.it/lsa/living> .
+
+###  http://experiments.gauss.it/lsa/livingHumidexLogicalSensor
+lsaex:livingHumidexLogicalSensor rdf:type owl:NamedIndividual, <http://experiments.gauss.it/lsa/HumidexLogicalSensor>, <http://www.gauss.it/lsa/LogicalSensor>,
+	<http://www.w3.org/ns/sosa/Sensor>, <http://www.w3.org/ns/ssn/System>;
+	<http://www.w3.org/ns/sosa/observes> <http://experiments.gauss.it/lsa/livingHumidex>;
+	<http://www.w3.org/ns/ssn/forProperty> <http://experiments.gauss.it/lsa/livingHumidex>;
+	<http://www.w3.org/ns/ssn/implements> <http://experiments.gauss.it/lsa/livingHumidexSoftwareProcedure> .
+
+###  http://experiments.gauss.it/lsa/livingHumidexSoftwareProcedure
+lsaex:livingHumidexSoftwareProcedure rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/SoftwareProcedure>, <http://www.gauss.it/lsa/lsaex:HumidexSoftwareProcedure>,
+	<http://www.w3.org/ns/sosa/Procedure>;
+	<http://www.gauss.it/lsa/hasBehavior> <http://experiments.gauss.it/lsa/livingHumidexActionableBehavior>;
+	<http://www.w3.org/ns/ssn/hasInput> <http://experiments.gauss.it/lsa/livingHumidity>, <http://experiments.gauss.it/lsa/livingTemperature>;
+	<http://www.w3.org/ns/ssn/implementedBy> <http://experiments.gauss.it/lsa/livingHumidexLogicalSensor> .
+
+###  http://experiments.gauss.it/lsa/livingHumidity
+lsaex:livingHumidity rdf:type owl:NamedIndividual, <http://experiments.gauss.it/lsa/ObservableHumidity>,
+	<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension>, <http://www.w3.org/ns/sosa/ObservableProperty>, <http://www.w3.org/ns/ssn/Input>, <http://www.w3.org/ns/ssn/Property>;
+	<http://www.w3.org/ns/sosa/isObservedBy> <http://experiments.gauss.it/lsa/livingHumiditySensor>;
+	<http://www.w3.org/ns/ssn/isPropertyOf> <http://experiments.gauss.it/lsa/living> .
+
+###  http://experiments.gauss.it/lsa/livingHumiditySensor
+lsaex:livingHumiditySensor rdf:type owl:NamedIndividual, <http://experiments.gauss.it/lsa/HumiditySensor>, <http://www.w3.org/ns/sosa/Sensor>,
+	<http://www.w3.org/ns/ssn/System>;
+	<http://www.w3.org/ns/sosa/isHostedBy> <http://experiments.gauss.it/lsa/living>;
+	<http://www.w3.org/ns/sosa/observes> <http://experiments.gauss.it/lsa/livingHumidity>;
+	<http://www.w3.org/ns/ssn/forProperty> <http://experiments.gauss.it/lsa/livingHumidity> .
+
+###  http://experiments.gauss.it/lsa/livingTemperature
+lsaex:livingTemperature rdf:type owl:NamedIndividual, <http://experiments.gauss.it/lsa/ObservableTemperature>,
+	<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension>, <http://www.w3.org/ns/sosa/ObservableProperty>, <http://www.w3.org/ns/ssn/Input>, <http://www.w3.org/ns/ssn/Property>;
+	<http://www.w3.org/ns/sosa/isObservedBy> <http://experiments.gauss.it/lsa/livingTemperatureSensor>;
+	<http://www.w3.org/ns/ssn/isPropertyOf> <http://experiments.gauss.it/lsa/living> .
+
+###  http://experiments.gauss.it/lsa/livingTemperatureSensor
+lsaex:livingTemperatureSensor rdf:type owl:NamedIndividual, <http://experiments.gauss.it/lsa/TemperatureSensor>, <http://www.w3.org/ns/sosa/Sensor>,
+	<http://www.w3.org/ns/ssn/System>;
+	<http://www.w3.org/ns/sosa/isHostedBy> <http://experiments.gauss.it/lsa/living>;
+	<http://www.w3.org/ns/sosa/madeObservation> <http://experiments.gauss.it/lsa/livingTemperatureObservation#000000>;
+	<http://www.w3.org/ns/sosa/observes> <http://experiments.gauss.it/lsa/livingTemperature>;
+	<http://www.w3.org/ns/ssn/forProperty> <http://experiments.gauss.it/lsa/livingTemperature> .
+
+###  http://experiments.gauss.it/lsa/livingTemperatureObservation#000000
+#<http://experiments.gauss.it/lsa/livingTemperatureObservation#000000> rdf:type owl:NamedIndividual, <http://experiments.gauss.it/lsa/TemperatureObservation>, <http://www.w3.org/ns/sosa/Observation>;
+#	<http://www.w3.org/ns/sosa/hasFeatureOfInterest> <http://experiments.gauss.it/lsa/living>;
+#	<http://www.w3.org/ns/sosa/madeBySensor> <http://experiments.gauss.it/lsa/livingTemperatureSensor>;
+#	<http://www.w3.org/ns/sosa/observedProperty> <http://experiments.gauss.it/lsa/livingTemperature>;
+#	<http://www.w3.org/ns/sosa/hasSimpleResult> 22;
+#	<http://www.w3.org/ns/sosa/resultTime> "2002-05-30T09:00:00"^^xsd:dateTime .
+
+lsaex:humidexJavaAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:JavaAction;
+	lsa:hasActionType lsa:javaActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:className "it.gaussproject.semanticengine.experiments.agents.java.HumidexJavaAction" .
+
+lsaex:humidexHeavyJavaAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:JavaAction;
+	lsa:hasActionType lsa:javaActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:className "it.gaussproject.semanticengine.experiments.agents.java.HumidexHeavyJavaAction" .
+
+lsaex:noopJavaAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:JavaAction;
+	lsa:hasActionType lsa:javaActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:className "it.gaussproject.semanticengine.experiments.agents.java.NoopJavaAction" .
+
+lsaex:humidexFullRestAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:RestAction;
+	lsa:hasActionType lsa:restActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:hasMethod "POST";
+	lsa:hasURL "http://localhost:9877/engineapi/restagents/humidexfull";
+	lsa:requestJSON """
+{ 
+\"sparqlEndpoint\" : \"${_sparqlEndpoint}\" , 
+\"apiEndpoint\" : \"${_apiEndpoint}\"
+}""" .
+
+lsaex:humidexHeavyFullRestAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:RestAction;
+	lsa:hasActionType lsa:restActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:hasMethod "POST";
+	lsa:hasURL "http://localhost:9877/engineapi/restagents/humidexheavyfull";
+	lsa:requestJSON """
+{ 
+\"sparqlEndpoint\" : \"${_sparqlEndpoint}\" , 
+\"apiEndpoint\" : \"${_apiEndpoint}\"
+}""" .
+
+lsaex:humidexHeavyRemoteFullRestAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:RestAction;
+	lsa:hasActionType lsa:restActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:hasMethod "POST";
+	lsa:hasURL "http://192.168.1.99:9877/engineapi/restagents/humidexheavyfull";
+	lsa:requestJSON """
+{ 
+\"sparqlEndpoint\" : \"${_sparqlEndpoint}\" , 
+\"apiEndpoint\" : \"${_apiEndpoint}\"
+}""" .
+
+lsaex:humidexSparqlUpdateAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:SparqlQueryAction;
+	lsa:hasActionType lsa:sparqlUpdateActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:hasCode """
+INSERT {
+    ?observation rdf:type sosa:Observation, lsaex:HumidexObservation;
+        sosa:madeBySensor <http://experiments.gauss.it/lsa/livingHumidexSensor>;
+        sosa:resultTime ?now;
+        sosa:observedProperty <http://experiments.gauss.it/lsa/livingHumidex>;
+        sosa:hasSimpleResult ?humidex;
+        lsa:expires ?expires;
+        sosa:hasFeatureOfInterest <http://experiments.gauss.it/lsa/living> .
+} WHERE {
+    SELECT * WHERE {
+        {
+            SELECT ?temperature WHERE {
+                ?tobs a sosa:Observation;
+                    sosa:observedProperty lsaex:livingTemperature;
+                    sosa:hasSimpleResult ?temperature;
+                    sosa:resultTime ?resultTime
+            } ORDER BY DESC (?resultTime) LIMIT 1
+        }
+        {
+            SELECT ?humidity WHERE {
+                ?hobs a sosa:Observation;
+                    sosa:observedProperty lsaex:livingHumidity;
+                    sosa:hasSimpleResult ?humidity;
+                    sosa:resultTime ?resultTime
+            } ORDER BY DESC (?resultTime) LIMIT 1
+        }
+        BIND(?temperature+?humidity as ?humidex)
+        BIND(IRI(CONCAT('http://experiments.gauss.it/lsa/livingHumidex/observations#', STR(now()))) as ?observation)
+        BIND(now() as ?now)
+        BIND(now()+'PT100S'^^xsd:duration as ?expires)
+    }
+}
+""".
+
+lsaex:humidexSparqlQueryAction-1 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:SparqlQueryAction;
+	lsa:hasActionType lsa:sparqlQueryActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:hasCode """
+SELECT ?temperature ?humidity WHERE {
+    {
+        SELECT ?temperature WHERE {
+            ?tobs a sosa:Observation;
+                sosa:observedProperty lsaex:livingTemperature;
+                sosa:hasSimpleResult ?temperature;
+                sosa:resultTime ?resultTime
+        } ORDER BY DESC (?resultTime) LIMIT 1
+    }
+    {
+        SELECT ?humidity WHERE {
+            ?hobs a sosa:Observation;
+                sosa:observedProperty lsaex:livingHumidity;
+                sosa:hasSimpleResult ?humidity;
+                sosa:resultTime ?resultTime
+        } ORDER BY DESC (?resultTime) LIMIT 1
+    }
+}
+""".
+
+lsaex:humidexRestAction-2 rdf:type owl:NamedIndividual, lsa:Actionable, lsa:RestAction;
+	lsa:hasActionType lsa:restActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "2"^^xsd:positiveInteger;
+	lsa:hasMethod "POST";
+	lsa:hasURL "http://localhost:9877/engineapi/restagents/humidex";
+	lsa:requestJSON """
+{ 
+\"sparqlEndpoint\" : \"${_sparqlEndpoint}\" , 
+\"apiEndpoint\" : \"${_apiEndpoint}\" ,
+\"temperature\" : \"${temperature}\" ,
+\"humidity\" : \"${humidity}\"
+}""".
+
+# Java action to keep track of the time taken to create a humidex observation from the time the temperature/humidy observation is reported
+lsaex:timingJavaAction rdf:type owl:NamedIndividual, lsa:Actionable, lsa:JavaAction;
+	lsa:hasActionType lsa:javaActionType;
+	lsa:isActionSpecificationOf lsaex:livingHumidexActionableBehavior;
+	lsa:hasIndex "2"^^xsd:positiveInteger;
+	lsa:className "it.gaussproject.semanticengine.experiments.agents.java.TimingJavaAction" .
+
+###  http://experiments.gauss.it/lsa/livingHumidexActionableBehavior
+lsaex:livingHumidexActionableBehavior rdf:type owl:NamedIndividual, lsaex:HumidexActionableBehavior, lsa:ActionableBehavior;
+	lsa:isBehaviorOf lsaex:livingHumidexSoftwareProcedure;
+
+# Java solution
+#	lsa:hasActionSpecification lsaex:humidexJavaAction-1.
+
+# Java NOOP solution
+#	lsa:hasActionSpecification lsaex:noopJavaAction-1.
+
+# Java heavy solution
+#	lsa:hasActionSpecification lsaex:humidexHeavyJavaAction-1.
+
+# Fully SPARQL solution
+	lsa:hasActionSpecification lsaex:humidexSparqlUpdateAction-1.
+
+# Fully REST solution
+#	lsa:hasActionSpecification lsaex:humidexFullRestAction-1.
+
+# Fully REST heavy solution
+#	lsa:hasActionSpecification lsaex:humidexHeavyFullRestAction-1.
+
+# Fully REST REMOTE heavy solution
+#	lsa:hasActionSpecification lsaex:humidexHeavyRemoteFullRestAction-1.
+
+# REST + SPARQL solution
+#	lsa:hasActionSpecification lsaex:humidexSparqlQueryAction-1;
+#	lsa:hasActionSpecification lsaex:humidexRestAction-2.
+
+# Timing Java action
+lsaex:livingHumidexActionableBehavior lsa:hasActionSpecification lsaex:timingJavaAction.
+
+#########################################
+#
+# Simple twice logical sensor
+
+lsaex:TwiceLogicalSensor rdf:type owl:Class;
+	rdfs:subClassOf lsa:LogicalSensor.
+
+lsaex:TwiceActionableBehavior rdf:type owl:Class;
+	rdfs:subClassOf lsa:ActionableBehavior.
+
+lsaex:testTwiceActionableBehavior rdf:type owl:NamedIndividual, lsaex:TwiceActionableBehavior, lsa:ActionableBehavior;
+	lsa:isBehaviorOf lsaex:testTwiceSoftwareProcedure;
+	lsa:hasActionSpecification lsaex:twiceSparqlUpdateAction, lsaex:timingJavaAction.
+
+lsaex:testTwiceSoftwareProcedure rdf:type owl:NamedIndividual, lsa:SoftwareProcedure, lsaex:HumidexSoftwareProcedure, sosa:Procedure;
+	lsa:hasBehavior lsaex:testTwiceActionableBehavior;
+	ssn:hasInput lsaex:testOnce;
+	ssn:implementedBy lsaex:livingHumidexLogicalSensor.
+
+lsaex:twiceSparqlUpdateAction rdf:type owl:NamedIndividual, lsa:Actionable, lsa:SparqlQueryAction;
+	lsa:hasActionType lsa:sparqlUpdateActionType;
+	lsa:isActionSpecificationOf lsaex:testTwiceActionableBehavior;
+	lsa:hasIndex "1"^^xsd:positiveInteger;
+	lsa:hasCode """
+INSERT {
+    ?observation rdf:type sosa:Observation, lsaex:TwiceObservation;
+        sosa:madeBySensor <http://experiments.gauss.it/lsa/TwiceLogicalSensor>;
+        sosa:resultTime ?now;
+        sosa:observedProperty <http://experiments.gauss.it/lsa/testTwice>;
+        sosa:hasSimpleResult ?twice;
+        lsa:expires ?expires;
+        sosa:hasFeatureOfInterest <http://experiments.gauss.it/lsa/test> .
+} WHERE {
+    SELECT * WHERE {
+        BIND(${_observation_simpleResult}*2 as ?twice)
+        BIND(IRI(CONCAT('http://experiments.gauss.it/lsa/testTwice/observations#', STR(now()))) as ?observation)
+        BIND(now() as ?now)
+    }
+}
+""".
+
+#########################################
+#
+# IR door sensor
+
+lsaex:DoorIRLogicalSensor rdf:type owl:Class;
+	rdfs:subClassOf lsa:LogicalSensor.
+
+lsaex:DoorIRActionableBehavior rdf:type owl:Class;
+	rdfs:subClassOf lsa:ActionableBehavior.
+
+lsaex:testDoorRoom1IRLogicalSensor rdf:type owl:NamedIndividual, lsaex:DoorIRLogicalSensor, lsa:LogicalSensor, sosa:Sensor, ssn:System;
+	sosa:observes lsaex:room1Presence;
+	ssn:forProperty lsaex:room1Presence;
+	ssn:implements lsa:testDoorRoom1IRSoftwareProcedure.
+
+lsaex:testDoorIRActionableBehavior rdf:type owl:NamedIndividual, lsaex:DoorIRActionableBehavior, lsa:ActionableBehavior;
+	lsa:isBehaviorOf lsaex:testDoorIRSoftwareProcedure;
+	lsa:hasActionSpecification lsaex:doorIRSparqlUpdateAction, lsaex:timingJavaAction.
+
+lsaex:testDoorIRSoftwareProcedure rdf:type owl:NamedIndividual, lsa:SoftwareProcedure, lsaex:HumidexSoftwareProcedure, sosa:Procedure;
+	lsa:hasBehavior lsaex:testDoorIRActionableBehavior;
+	ssn:hasInput lsaex:testIRIn, lsaex:testIROut;
+	ssn:implementedBy lsaex:livingHumidexLogicalSensor.
+

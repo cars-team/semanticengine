@@ -28,6 +28,7 @@ import org.apache.jena.sparql.graph.GraphWrapper;
  * @author Davide Rossi
  */
 public class TransactionEnqueuingDatasetGraphWrapper extends DatasetGraphWrapper {
+	@SuppressWarnings("unused")
 	private static Logger LOG = Logger.getGlobal();
 
 	private class ModelEnqueuingGraphWrapper extends GraphWrapper {
@@ -43,7 +44,6 @@ public class TransactionEnqueuingDatasetGraphWrapper extends DatasetGraphWrapper
 		}
 		@Override
 		public void add(Triple triple) throws AddDeniedException {
-			LOG.info("adding "+triple);
 			super.add(triple);
 			this.accumulatorModel.getGraph().add(triple);
 		}
@@ -84,8 +84,12 @@ public class TransactionEnqueuingDatasetGraphWrapper extends DatasetGraphWrapper
 		super.commit();
 		if(this.modelEnqueuingGraphWrapper != null) {
 			Model model = this.modelEnqueuingGraphWrapper.takeChanges();
+			//TODO: possible optimization: only add interesting models (relevant observations, changes in procedure inputs, ...)
 			if(!model.isEmpty()) {
-				this.queue.add(model);
+				try {
+					this.queue.put(model);
+				} catch (InterruptedException e) {
+				}
 			}
 		}
 	}

@@ -1,0 +1,165 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn:  <http://www.w3.org/ns/ssn/> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qudt-1-1: <http://qudt.org/1.1/schema/qudt#> .
+@prefix qudt-unit-1-1: <http://qudt.org/1.1/vocab/unit#> .
+@prefix cdt: <http://w3id.org/lindt/custom_datatypes#> .
+@prefix lsa: <http://www.gauss.it/lsa/> .
+@prefix gmus: <http://www.gauss.it/museum/> .
+@prefix gauss: <http://gauss.it/> .
+
+# A room
+gmus:room1 rdf:type sosa:FeatureOfInterest ;
+  ssn:hasProperty gmus:people-room1 .
+
+# The observable property about number of people in a room
+gmus:people-room1 rdf:type gmus:PeopleInRoomProperty ;
+  ssn:isPropertyOf gmus:room1 .
+
+gmus:PeopleInRoomProperty rdf:subClassOf sosa:ObservableProperty ;
+
+# A door in a room
+gmus:door1 rdf:type:sosa:FeatureOfInterest ;
+  rdf:type sosa:Platform ;
+  ssn:hasProperty gmus:presence-room1-ir1-zoneDoorInside ;
+  ssn:hasProperty gmus:presence-room1-ir2-zoneDoorOutside .
+  
+# The observable property about presence in the inside of the door
+gmus:presence-room1-ir1-zoneDoorInside rdf:type gmus:PresenceInSensorZoneProperty ;
+  ssn:isPropertyOf gmus:door1 .
+
+# The observable property about presence in the outside of the door
+gmus:presence-room1-ir2-zoneDoorOutside rdf:type gmus:PresenceInSensorZoneProperty ;
+  ssn:isPropertyOf gmus:door1 .
+
+# The sensor on the inside side of door 1 on room NW
+gmus:ir1 rdf:type gmus:IRSensor ;
+#  rdf:type sosa:Sensor ;
+  sosa:observes gmus:presence-room1-ir1-zoneDoorInside ;
+  sosa:isHostedBy gmus:door1 .
+
+# The sensor on the outside side of door 1 on room NW
+gmus:ir2 rdf:type gmus:IRSensor ;
+#  rdf:type sosa:Sensor ;
+  sosa:observes gmus:presence-room1-ir2-zoneDoorOutside ;
+  sosa:isHostedBy gmus:door1 .
+
+gmus:IRSensor rdfs:subClassOf sosa:Sensor ;
+  ssn:detects gmus:ThermalStimulus .
+
+gmus:ThermalStimulus rdfs:subClassOf ssn:Stimulus ;
+  ssn:isProxyFor gmus:PresenceInSensorZoneProperty .
+
+gmus:PresenceInSensorZoneProperty rdfs:subClassOf sosa:ObservableProperty .
+  
+
+### logical sensors
+
+# The procedure of counting people composing photoelectric sensors
+gmus:DoorRoomEntrance rdfs:subClassOf lsa:SoftwareProcedure ;
+#  rdfs:subClassOf sosa:Procedure ;
+  ssn:hasInput gmus:PresenceInSensorZoneProperty ; 
+  ssn:hasInput gmus:PeopleInRoomProperty ;
+  lsa:hasBehavior gmus:doorRoomEntranceBehavior ;
+  ssn:implementedBy gmus:infraredPresenceSensor ;
+  lsa:hasBehavior gmus:doorRoomEntrance-behavior .
+  
+gmus:doorRoomEntranceBehavior rdf:type lsa:ActionableBehavior .
+
+gmus:infraredPresenceSensor rdfs:subClassOf lsa:LogicalSensor .
+#gmus:infraredPresenceSensor rdfs:subClassOf sosa:Sensor .
+
+gmus:entrance-door1-room1 rdf:type gmus:DoorRoomEntrance ;
+#  rdf:type lsa:SoftwareProcedure ;
+#  rdf:type sosa:Procedure ;
+  ssn:implementedBy gmus:ls1 ;
+# inferred
+  lsa:hasBehavior gmus:doorRoomEntrance-behavior ;
+  ssn:hasInput gmus:presence-room1-ir1-zoneDoorInside ;
+  ssn:hasInput gmus:presence-room1-ir2-zoneDoorOutside .#;
+#  ssn:hasInput gmus:people-room1 .
+
+gmus:presence-room1-ir1-zoneDoorInside rdf:type gmus:PresenceInSensorZoneProperty .
+gmus:presence-room1-ir2-zoneDoorOutside rdf:type gmus:PresenceInSensorZoneProperty .
+gmus:people-room1 rdf:type gmus:PeopleInRoomProperty .
+
+gmus:ls1 rdf:type gmus:infraredPresenceSensor ;
+  rdf:type lsa:LogicalSensor ;
+  rdf:type sosa:Sensor ;
+  sosa:observes gmus:people-room1 ;
+  sosa:isHostedBy gmus:triplestore ;
+  sosa:hasSubSystem gmus:ir1 ;
+  sosa:hasSubSystem gmus:ir2 .
+
+gmus:triplestore rdf:type sosa:Platform .
+
+gmus:doorRoomEntrance-behavior rdf:type lsa:ActionableBehavior ;
+  lsa:hasActionSpecification gmus:doorRoomEntrance-behavior-1-actionable ;
+  lsa:hasControlSpecification gmus:doorRoomEntrance-behavior-1 .
+
+gmus:doorRoomEntrance-behavior-1-actionable rdf:type lsa:Actionable ;
+  lsa:hasType gmus:sparqlQuery ;
+  lsa:hasCode """
+CONSTRUCT {
+	?newObservation a sosa:Observation ;
+    	sosa:madeBySensor gmus:ls1 ;
+		sosa:observedProperty gmus:people-room1 ;
+    	sosa:resultTime ?now ;
+    	sosa:hasSimpleResult ?newResult .
+} WHERE {
+    {
+    	SELECT ?observation ?propToObserve 
+    	WHERE {
+            ?observation a sosa:Observation ;
+                sosa:observedProperty ?propToObserve ;
+                sosa:resultTime ?resultTime .
+            <${_observation}> sosa:observedProperty ?obsProp ;
+            	sosa:resultTime ?obsTime .
+            ?featOfInterest ssn:hasProperty ?obsProp ;
+                ssn:hasProperty ?propToObserve .
+            FILTER ( ! ( ?propToObserve = ?obsProp ) )
+            BIND(?obsTime - ?resultTime as ?timeDifference)
+            FILTER(?obsTime > ?resultTime)
+            FILTER(?timeDifference < "PT1.500S"^^xsd:duration)
+    	} ORDER BY ASC(?timeDifference) LIMIT 1 
+  	}
+  	{
+		SELECT ?otherResult WHERE {
+            {
+                ?otherObservation a sosa:Observation ;
+                    sosa:madeBySensor gmus:ls1 ;
+                    sosa:resultTime ?otherTime ;
+                    sosa:hasSimpleResult ?otherResult .
+            } UNION {
+                BIND("0"^^xsd:integer as ?otherResult)
+                BIND("1970-01-01T00:00:00+00:00"^^xsd:dateTime as ?otherTime)
+            }
+        } ORDER BY DESC(?otherTime) LIMIT 1
+  	}
+    BIND(IF(STRENDS(STR(?propToObserve), "Outside"), xsd:integer(?otherResult)+1, IF(xsd:integer(?otherResult) > 0, xsd:integer(?otherResult)-1, 0)) as ?newResult)
+    BIND(now() as ?now)
+    BIND(IF(BOUND(?observation), IRI(CONCAT("http://www.gauss.it/museum/observation-ls1-1#", STR(?now))), ?observation) as ?newObservation) # ?newObservation is bound only if the inner select finds at least one observation, otherwise it's not bound and the insert/construct will do nothing    
+}""" .
+
+gmus:observation-ir2-1 rdf:type sosa:Observation ;
+  sosa:madeBySensor gmus:ir2 ;
+  sosa:hasFeatureOfInterest gmus:door1 ;
+  sosa:observedProperty gmus:presence-room1-ir2-zoneDoorOutside ;
+  sosa:resultTime "2018-07-13T11:50:18.111+00:00"^^xsd:dateTime .
+
+gmus:observation-ir1-1 rdf:type sosa:Observation ;
+  sosa:madeBySensor gmus:ir1 ;
+  sosa:hasFeatureOfInterest gmus:door1 ;
+  sosa:observedProperty gmus:presence-room1-ir1-zoneDoorInside ;
+  sosa:resultTime "2018-07-13T11:50:18.853+00:00"^^xsd:dateTime .
+
+# An observation as produced by the logical sensor sensor/logical/room/NW/people
+gmus:observation-ls1-1 rdf:type sosa:Observation ;
+  sosa:observedProperty gmus:people-room1 ;
+  sosa:hasFeatureOfInterest gmus:room1 ;
+  sosa:madeBySensor gmus:ls1 ;
+  sosa:hasSimpleResult "0"^^xsd:integer ;
+  sosa:resultTime "2018-07-13T11:48:31.642+00:00"^^xsd:dateTime .

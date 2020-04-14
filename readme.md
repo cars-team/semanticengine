@@ -11,7 +11,9 @@ Once started you can interact with the engine using the REST API or by simply en
 SPARQL queries from the command line.
 You can initialize the content of the knowledge base by running the engine with the 
 `-t` switch followed by the path of a Turtle file. The `-p` switch can be used to change 
-the port of the API endpoint. When the `-d` switch followed by a filename is specified that 
+the port of the API endpoint. The `-s` switch can be used to change the SPARQL endpoint
+port.
+When the `-d` switch followed by a filename is specified, that 
 file is used as a persistent database file. It `-t` is used in combination of `-d` 
 the database file is emptied before reading the Turtle file.
 

@@ -1,0 +1,639 @@
+@prefix : <http://www.gauss.it/lsaex/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix lsa:<http://www.gauss.it/lsa/> .
+@base <http://www.gauss.it/lsa/> .
+
+<http://www.gauss.it/lsa/> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.gauss.it/lsa/executedBy
+<http://www.gauss.it/lsa/executedBy> rdf:type owl:ObjectProperty ;
+                                     owl:inverseOf <http://www.gauss.it/lsa/executes> .
+
+
+###  http://www.gauss.it/lsa/executes
+<http://www.gauss.it/lsa/executes> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/hasActionSpecification
+<http://www.gauss.it/lsa/hasActionSpecification> rdf:type owl:ObjectProperty ;
+                                                 owl:inverseOf <http://www.gauss.it/lsa/isActionSpecificationOf> .
+
+
+###  http://www.gauss.it/lsa/hasActionType
+<http://www.gauss.it/lsa/hasActionType> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/hasBehavior
+<http://www.gauss.it/lsa/hasBehavior> rdf:type owl:ObjectProperty ;
+                                      owl:inverseOf <http://www.gauss.it/lsa/isBehaviorOf> .
+
+
+###  http://www.gauss.it/lsa/hasControlSpecification
+<http://www.gauss.it/lsa/hasControlSpecification> rdf:type owl:ObjectProperty ;
+                                                  owl:inverseOf <http://www.gauss.it/lsa/isControlSpecificationOf> .
+
+
+###  http://www.gauss.it/lsa/hasExecuted
+<http://www.gauss.it/lsa/hasExecuted> rdf:type owl:ObjectProperty ;
+                                      owl:inverseOf <http://www.gauss.it/lsa/madeBy> .
+
+
+###  http://www.gauss.it/lsa/hasState
+<http://www.gauss.it/lsa/hasState> rdf:type owl:ObjectProperty ;
+                                   owl:inverseOf <http://www.gauss.it/lsa/isStateOf> .
+
+
+###  http://www.gauss.it/lsa/hasTimespan
+<http://www.gauss.it/lsa/hasTimespan> rdf:type owl:ObjectProperty ;
+                                      owl:inverseOf <http://www.gauss.it/lsa/isTimespanOf> .
+
+
+###  http://www.gauss.it/lsa/hasType
+<http://www.gauss.it/lsa/hasType> rdf:type owl:ObjectProperty ;
+                                  owl:inverseOf <http://www.gauss.it/lsa/isTypeOf> .
+
+
+###  http://www.gauss.it/lsa/implementedBy
+<http://www.gauss.it/lsa/implementedBy> rdf:type owl:ObjectProperty ;
+                                        rdfs:subPropertyOf <http://www.w3.org/ns/ssn/implementedBy> ,
+                                                           [ owl:inverseOf <http://www.w3.org/ns/ssn/implements>
+                                                           ] .
+
+
+###  http://www.gauss.it/lsa/isAbleToExecute
+<http://www.gauss.it/lsa/isAbleToExecute> rdf:type owl:ObjectProperty ;
+                                          owl:inverseOf <http://www.gauss.it/lsa/isExecutableBy> .
+
+
+###  http://www.gauss.it/lsa/isActionSpecificationOf
+<http://www.gauss.it/lsa/isActionSpecificationOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/isBehaviorOf
+<http://www.gauss.it/lsa/isBehaviorOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/isControlSpecificationOf
+<http://www.gauss.it/lsa/isControlSpecificationOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/isExecutableBy
+<http://www.gauss.it/lsa/isExecutableBy> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/isStateOf
+<http://www.gauss.it/lsa/isStateOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/isTimespanOf
+<http://www.gauss.it/lsa/isTimespanOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/isTypeOf
+<http://www.gauss.it/lsa/isTypeOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/madeBy
+<http://www.gauss.it/lsa/madeBy> rdf:type owl:ObjectProperty .
+
+
+###  http://www.gauss.it/lsa/usedProcedure
+<http://www.gauss.it/lsa/usedProcedure> rdf:type owl:ObjectProperty ;
+                                        rdfs:subPropertyOf <http://www.w3.org/ns/sosa/usedProcedure> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasSubdimension
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasSubdimension> rdf:type owl:ObjectProperty ;
+                                                                       owl:inverseOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#isSubdimensionOf> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#isSubdimensionOf
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#isSubdimensionOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/2002/07/owl#topObjectProperty
+owl:topObjectProperty rdf:type owl:ObjectProperty ;
+                      owl:inverseOf owl:topObjectProperty ;
+                      rdf:type owl:SymmetricProperty ,
+                               owl:TransitiveProperty .
+
+
+###  http://www.w3.org/ns/sosa/actsOnProperty
+<http://www.w3.org/ns/sosa/actsOnProperty> rdf:type owl:ObjectProperty ;
+                                           owl:inverseOf <http://www.w3.org/ns/sosa/isActedOnBy> .
+
+
+###  http://www.w3.org/ns/sosa/hasFeatureOfInterest
+<http://www.w3.org/ns/sosa/hasFeatureOfInterest> rdf:type owl:ObjectProperty ;
+                                                 owl:inverseOf <http://www.w3.org/ns/sosa/isFeatureOfInterestOf> .
+
+
+###  http://www.w3.org/ns/sosa/hasResult
+<http://www.w3.org/ns/sosa/hasResult> rdf:type owl:ObjectProperty ;
+                                      owl:inverseOf <http://www.w3.org/ns/sosa/isResultOf> .
+
+
+###  http://www.w3.org/ns/sosa/hasSample
+<http://www.w3.org/ns/sosa/hasSample> rdf:type owl:ObjectProperty ;
+                                      owl:inverseOf <http://www.w3.org/ns/sosa/isSampleOf> .
+
+
+###  http://www.w3.org/ns/sosa/hosts
+<http://www.w3.org/ns/sosa/hosts> rdf:type owl:ObjectProperty ;
+                                  owl:inverseOf <http://www.w3.org/ns/sosa/isHostedBy> .
+
+
+###  http://www.w3.org/ns/sosa/isActedOnBy
+<http://www.w3.org/ns/sosa/isActedOnBy> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/isFeatureOfInterestOf
+<http://www.w3.org/ns/sosa/isFeatureOfInterestOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/isHostedBy
+<http://www.w3.org/ns/sosa/isHostedBy> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/isObservedBy
+<http://www.w3.org/ns/sosa/isObservedBy> rdf:type owl:ObjectProperty ;
+                                         rdfs:subPropertyOf [ owl:inverseOf <http://www.w3.org/ns/ssn/forProperty>
+                                                            ] ;
+                                         owl:inverseOf <http://www.w3.org/ns/sosa/observes> .
+
+
+###  http://www.w3.org/ns/sosa/isResultOf
+<http://www.w3.org/ns/sosa/isResultOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/isSampleOf
+<http://www.w3.org/ns/sosa/isSampleOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/madeActuation
+<http://www.w3.org/ns/sosa/madeActuation> rdf:type owl:ObjectProperty ;
+                                          owl:inverseOf <http://www.w3.org/ns/sosa/madeByActuator> .
+
+
+###  http://www.w3.org/ns/sosa/madeByActuator
+<http://www.w3.org/ns/sosa/madeByActuator> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/madeBySampler
+<http://www.w3.org/ns/sosa/madeBySampler> rdf:type owl:ObjectProperty ;
+                                          owl:inverseOf <http://www.w3.org/ns/sosa/madeSampling> .
+
+
+###  http://www.w3.org/ns/sosa/madeBySensor
+<http://www.w3.org/ns/sosa/madeBySensor> rdf:type owl:ObjectProperty ;
+                                         owl:inverseOf <http://www.w3.org/ns/sosa/madeObservation> .
+
+
+###  http://www.w3.org/ns/sosa/madeObservation
+<http://www.w3.org/ns/sosa/madeObservation> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/madeSampling
+<http://www.w3.org/ns/sosa/madeSampling> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/observedProperty
+<http://www.w3.org/ns/sosa/observedProperty> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/sosa/observes
+<http://www.w3.org/ns/sosa/observes> rdf:type owl:ObjectProperty ;
+                                     rdfs:subPropertyOf <http://www.w3.org/ns/ssn/forProperty> .
+
+
+###  http://www.w3.org/ns/sosa/usedProcedure
+<http://www.w3.org/ns/sosa/usedProcedure> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/ssn/deployedOnPlatform
+<http://www.w3.org/ns/ssn/deployedOnPlatform> rdf:type owl:ObjectProperty ;
+                                              owl:inverseOf <http://www.w3.org/ns/ssn/inDeployment> .
+
+
+###  http://www.w3.org/ns/ssn/deployedSystem
+<http://www.w3.org/ns/ssn/deployedSystem> rdf:type owl:ObjectProperty ;
+                                          owl:inverseOf <http://www.w3.org/ns/ssn/hasDeployment> .
+
+
+###  http://www.w3.org/ns/ssn/forProperty
+<http://www.w3.org/ns/ssn/forProperty> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/ssn/hasDeployment
+<http://www.w3.org/ns/ssn/hasDeployment> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/ssn/hasInput
+<http://www.w3.org/ns/ssn/hasInput> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/ssn/hasProperty
+<http://www.w3.org/ns/ssn/hasProperty> rdf:type owl:ObjectProperty ;
+                                       owl:inverseOf <http://www.w3.org/ns/ssn/isPropertyOf> .
+
+
+###  http://www.w3.org/ns/ssn/implementedBy
+<http://www.w3.org/ns/ssn/implementedBy> rdf:type owl:ObjectProperty ;
+                                         owl:inverseOf <http://www.w3.org/ns/ssn/implements> .
+
+
+###  http://www.w3.org/ns/ssn/implements
+<http://www.w3.org/ns/ssn/implements> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/ssn/inDeployment
+<http://www.w3.org/ns/ssn/inDeployment> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/ssn/isPropertyOf
+<http://www.w3.org/ns/ssn/isPropertyOf> rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.gauss.it/lsa/hasIndex
+<http://www.gauss.it/lsa/hasIndex> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.gauss.it/lsa/hasMethod
+<http://www.gauss.it/lsa/hasMethod> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.gauss.it/lsa/hasURL
+<http://www.gauss.it/lsa/hasURL> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.gauss.it/lsa/requestJSON
+<http://www.gauss.it/lsa/requestJSON> rdf:type owl:DatatypeProperty .
+
+###  http://www.gauss.it/lsaex/lsa:className
+<http://www.gauss.it/lsa/className> rdf:type owl:DatatypeProperty ;
+               rdfs:domain <http://www.gauss.it/lsa/JavaAction> .
+
+###  http://www.gauss.it/lsaex/lsa:expires
+<http://www.gauss.it/lsa/:expires> rdf:type owl:DatatypeProperty ;
+             rdfs:range xsd:dateTime .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasStringValue
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasStringValue> rdf:type owl:DatatypeProperty ;
+                                                                      rdfs:subPropertyOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasValue> ;
+                                                                      rdf:type owl:FunctionalProperty .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasValue
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#hasValue> rdf:type owl:DatatypeProperty ,
+                                                                         owl:FunctionalProperty .
+
+
+###  http://www.w3.org/ns/sosa/hasSimpleResult
+<http://www.w3.org/ns/sosa/hasSimpleResult> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.w3.org/ns/sosa/resultTime
+<http://www.w3.org/ns/sosa/resultTime> rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://example.museum.gauss.it/ThermalStimulus
+<http://example.museum.gauss.it/ThermalStimulus> rdf:type owl:Class ;
+                                                 rdfs:subClassOf <http://www.w3.org/ns/ssn/Stimulus> .
+
+###  http://purl.org/vocommons/voaf#Vocabulary
+<http://purl.org/vocommons/voaf#Vocabulary> rdf:type owl:Class .
+
+
+###  http://www.gauss.it/lsa/ActionType
+<http://www.gauss.it/lsa/ActionType> rdf:type owl:Class .
+
+
+###  http://www.gauss.it/lsa/Actionable
+<http://www.gauss.it/lsa/Actionable> rdf:type owl:Class .
+
+
+###  http://www.gauss.it/lsa/ActionableBehavior
+<http://www.gauss.it/lsa/ActionableBehavior> rdf:type owl:Class .
+
+
+###  http://www.gauss.it/lsa/ActionableType
+<http://www.gauss.it/lsa/ActionableType> rdf:type owl:Class ;
+                                         rdfs:subClassOf <http://www.gauss.it/lsa/Type> .
+
+
+###  http://www.gauss.it/lsa/AddTTLAction
+<http://www.gauss.it/lsa/AddTTLAction> rdf:type owl:Class ;
+                                       rdfs:subClassOf <http://www.gauss.it/lsa/Actionable> .
+
+###  http://www.gauss.it/lsa/restAction
+lsa:restAction rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionableType>, <http://www.gauss.it/lsa/Type> .
+
+###  http://www.gauss.it/lsa/sparqlQueryAction
+lsa:sparqlQueryAction rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionableType>, <http://www.gauss.it/lsa/Type> .
+
+###  http://www.gauss.it/lsa/sparqlUpdateAction
+lsa:sparqlUpdateAction rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionableType>, <http://www.gauss.it/lsa/Type> .
+
+
+###  http://www.gauss.it/lsa/BindingType
+<http://www.gauss.it/lsa/BindingType> rdf:type owl:Class ;
+                                      rdfs:subClassOf <http://www.gauss.it/lsa/Type> .
+
+
+###  http://www.gauss.it/lsa/ControlStructure
+<http://www.gauss.it/lsa/ControlStructure> rdf:type owl:Class .
+
+
+###  http://www.gauss.it/lsa/JavaAction
+<http://www.gauss.it/lsa/JavaAction> rdf:type owl:Class ;
+                                     rdfs:subClassOf <http://www.gauss.it/lsa/Actionable> .
+
+
+###  http://www.gauss.it/lsa/List
+<http://www.gauss.it/lsa/List> rdf:type owl:Class ;
+                               rdfs:subClassOf <http://www.gauss.it/lsa/ControlStructure> .
+
+
+###  http://www.gauss.it/lsa/LogicalActuator
+<http://www.gauss.it/lsa/LogicalActuator> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://www.w3.org/ns/sosa/Actuator> .
+
+
+###  http://www.gauss.it/lsa/LogicalSensor
+<http://www.gauss.it/lsa/LogicalSensor> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://www.w3.org/ns/sosa/Sensor> .
+
+
+###  http://www.gauss.it/lsa/QueryEngine
+<http://www.gauss.it/lsa/QueryEngine> rdf:type owl:Class ;
+                                      rdfs:subClassOf <http://www.gauss.it/lsa/SoftwareProcedureExecutor> .
+
+
+###  http://www.gauss.it/lsa/RequestEngine
+<http://www.gauss.it/lsa/RequestEngine> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://www.gauss.it/lsa/SoftwareProcedureExecutor> .
+
+
+###  http://www.gauss.it/lsa/RestAction
+<http://www.gauss.it/lsa/RestAction> rdf:type owl:Class ;
+                                     rdfs:subClassOf <http://www.gauss.it/lsa/Actionable> .
+
+
+###  http://www.gauss.it/lsa/SoftwareProcedure
+<http://www.gauss.it/lsa/SoftwareProcedure> rdf:type owl:Class ;
+                                            rdfs:subClassOf <http://www.w3.org/ns/sosa/Procedure> .
+
+
+###  http://www.gauss.it/lsa/SoftwareProcedureExecutor
+<http://www.gauss.it/lsa/SoftwareProcedureExecutor> rdf:type owl:Class .
+
+
+###  http://www.gauss.it/lsa/SparqlConstructAction
+<http://www.gauss.it/lsa/SparqlConstructAction> rdf:type owl:Class ;
+                                                rdfs:subClassOf <http://www.gauss.it/lsa/Actionable> .
+
+
+###  http://www.gauss.it/lsa/SparqlQueryAction
+<http://www.gauss.it/lsa/SparqlQueryAction> rdf:type owl:Class ;
+                                            rdfs:subClassOf <http://www.gauss.it/lsa/Actionable> .
+
+
+###  http://www.gauss.it/lsa/SparqlUpdateAction
+<http://www.gauss.it/lsa/SparqlUpdateAction> rdf:type owl:Class ;
+                                             rdfs:subClassOf <http://www.gauss.it/lsa/Actionable> .
+
+
+###  http://www.gauss.it/lsa/Type
+<http://www.gauss.it/lsa/Type> rdf:type owl:Class .
+
+
+###  http://www.gauss.it/lsa/WorkingType
+<http://www.gauss.it/lsa/WorkingType> rdf:type owl:Class ;
+                                      rdfs:subClassOf <http://www.gauss.it/lsa/Type> .
+
+
+###  http://www.gauss.it/lsa/lsaex:HumidexSoftwareProcedure
+<http://www.gauss.it/lsa/lsaex:HumidexSoftwareProcedure> rdf:type owl:Class ;
+                                                         rdfs:subClassOf <http://www.gauss.it/lsa/SoftwareProcedure> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Agent
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Agent> rdf:type owl:Class ;
+                                                             rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#AtomicContextDimension
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#AtomicContextDimension> rdf:type owl:Class ;
+                                                                              rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#CompositeContextDimension
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#CompositeContextDimension> rdf:type owl:Class ;
+                                                                                 rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> rdf:type owl:Class .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Country
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Country> rdf:type owl:Class ;
+                                                               rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Location> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#DesktopComputer
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#DesktopComputer> rdf:type owl:Class ;
+                                                                       rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HardwareAgent> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HardwareAgent
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HardwareAgent> rdf:type owl:Class ;
+                                                                     rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Agent> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Home
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Home> rdf:type owl:Class ;
+                                                            rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Location> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HumanAgent
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HumanAgent> rdf:type owl:Class ;
+                                                                  rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Agent> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Laptop
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Laptop> rdf:type owl:Class ;
+                                                              rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HardwareAgent> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Location
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Location> rdf:type owl:Class ;
+                                                                rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#PhysicalEnvironment
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#PhysicalEnvironment> rdf:type owl:Class ;
+                                                                           rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Preferences
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Preferences> rdf:type owl:Class ;
+                                                                   rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Role
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Role> rdf:type owl:Class ;
+                                                            rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Room
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Room> rdf:type owl:Class ;
+                                                            rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Location> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Smartphone
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Smartphone> rdf:type owl:Class ;
+                                                                  rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#HardwareAgent> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#SoftwareAgent
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#SoftwareAgent> rdf:type owl:Class ;
+                                                                     rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Agent> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Street
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Street> rdf:type owl:Class ;
+                                                              rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Location> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Time
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#Time> rdf:type owl:Class ;
+                                                            rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#WebService
+<http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#WebService> rdf:type owl:Class ;
+                                                                  rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#SoftwareAgent> .
+
+
+###  http://www.w3.org/ns/sosa/ActuatableProperty
+<http://www.w3.org/ns/sosa/ActuatableProperty> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://www.w3.org/ns/ssn/Property> .
+
+
+###  http://www.w3.org/ns/sosa/Actuator
+<http://www.w3.org/ns/sosa/Actuator> rdf:type owl:Class ;
+                                     rdfs:subClassOf <http://www.w3.org/ns/ssn/System> .
+
+
+###  http://www.w3.org/ns/sosa/FeatureOfInterest
+<http://www.w3.org/ns/sosa/FeatureOfInterest> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/sosa/ObservableProperty
+<http://www.w3.org/ns/sosa/ObservableProperty> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://www.w3.org/ns/ssn/Property> .
+
+
+###  http://www.w3.org/ns/sosa/Observation
+<http://www.w3.org/ns/sosa/Observation> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/sosa/Platform
+<http://www.w3.org/ns/sosa/Platform> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/sosa/Procedure
+<http://www.w3.org/ns/sosa/Procedure> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/sosa/Result
+<http://www.w3.org/ns/sosa/Result> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/sosa/Sample
+<http://www.w3.org/ns/sosa/Sample> rdf:type owl:Class ;
+                                   rdfs:subClassOf <http://www.w3.org/ns/sosa/FeatureOfInterest> ,
+                                                   <http://www.w3.org/ns/sosa/Result> .
+
+
+###  http://www.w3.org/ns/sosa/Sampler
+<http://www.w3.org/ns/sosa/Sampler> rdf:type owl:Class ;
+                                    rdfs:subClassOf <http://www.w3.org/ns/ssn/System> .
+
+
+###  http://www.w3.org/ns/sosa/Sensor
+<http://www.w3.org/ns/sosa/Sensor> rdf:type owl:Class ;
+                                   rdfs:subClassOf <http://www.w3.org/ns/ssn/System> .
+
+
+###  http://www.w3.org/ns/ssn/Input
+<http://www.w3.org/ns/ssn/Input> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/ssn/Property
+<http://www.w3.org/ns/ssn/Property> rdf:type owl:Class ;
+                                    rdfs:subClassOf <http://www.ing.unisannio.it/ding/semantics/OWL-C.owl#ContextDimension> .
+
+
+###  http://www.w3.org/ns/ssn/Stimulus
+<http://www.w3.org/ns/ssn/Stimulus> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/ssn/System
+<http://www.w3.org/ns/ssn/System> rdf:type owl:Class .
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.gauss.it/lsa/addTTLActionType
+<http://www.gauss.it/lsa/addTTLActionType> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionType> .
+
+###  http://www.gauss.it/lsa/attached
+<http://www.gauss.it/lsa/attached> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/BindingType>, <http://www.gauss.it/lsa/Type> .
+
+###  http://www.gauss.it/lsa/detached
+<http://www.gauss.it/lsa/detached> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/BindingType>, <http://www.gauss.it/lsa/Type> .
+
+###  http://www.gauss.it/lsa/faultyState
+<http://www.gauss.it/lsa/faultyState> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/Type>, <http://www.gauss.it/lsa/WorkingType> .
+
+###  http://www.gauss.it/lsa/inactive
+<http://www.gauss.it/lsa/inactive> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/BindingType>, <http://www.gauss.it/lsa/Type> .
+
+###  http://www.gauss.it/lsa/javaActionType
+<http://www.gauss.it/lsa/javaActionType> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionType> .
+
+###  http://www.gauss.it/lsa/normalState
+<http://www.gauss.it/lsa/normalState> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/Type>, <http://www.gauss.it/lsa/WorkingType> .
+
+###  http://www.gauss.it/lsa/restActionType
+<http://www.gauss.it/lsa/restActionType> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionType> .
+
+###  http://www.gauss.it/lsa/sparqlConstructActionType
+<http://www.gauss.it/lsa/sparqlConstructActionType> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionType> .
+
+###  http://www.gauss.it/lsa/sparqlQueryActionType
+<http://www.gauss.it/lsa/sparqlQueryActionType> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionType> .
+
+###  http://www.gauss.it/lsa/sparqlUpdateActionType
+<http://www.gauss.it/lsa/sparqlUpdateActionType> rdf:type owl:NamedIndividual, <http://www.gauss.it/lsa/ActionType> .
+
